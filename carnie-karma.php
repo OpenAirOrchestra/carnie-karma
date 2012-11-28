@@ -41,6 +41,19 @@ class carnieKarma {
 
 	}
 
+        /*
+         * Handles carniekarma shortcode
+         * examples:
+         * [carniekarma]
+         */
+        function carniekarma_shortcode_handler($atts, $content=NULL, $code="") {
+		/*
+                extract( shortcode_atts( array(
+                        'time' => 'all',
+                        'display' => 'short'), $atts ) );
+		*/
+	}
+
 };
 
 // instantiate class
@@ -48,6 +61,11 @@ $CARNIEKARMA = new carnieKarma;
 
 // add_action('admin_menu', array($CARNIEKARMA, 'create_admin_menu'));
 
+// activation hook
 register_activation_hook(__FILE__, array($CARNIEKARMA, 'activate'));
+
+// shortcodes
+add_shortcode('carniekarma', array($CARNIEKARMA, 'carniekarma_shortcode_handler'));
+
 
 ?>
