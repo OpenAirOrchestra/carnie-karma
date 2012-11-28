@@ -16,7 +16,8 @@ decay factor with a half life of about a year, so recent particpation
 is what matters most.  But what have you done for me lately?
 
 This plugin depends upon the carnig-gigs plugin and the
-workshop-attendance plugin
+workshop-attendance plugin.  It extracts data from the
+tables those plugins use.
 
 == Installation ==
 
