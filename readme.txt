@@ -23,8 +23,9 @@ tables those plugins use.
 
 1. Install and activate the carnie-gigs wordpress plugin.
 2. Install and activate the workshop-attendance wordpress plugin.
-3. Upload this plugin to the `/wp-content/plugins/` directory
-4. Activate the plugin through the 'Plugins' menu in WordPress
+3. Upload this plugin to the `/wp-content/plugins/` directory.
+4. Activate the plugin through the 'Plugins' menu in WordPress.
+5. Put the shortcode [carniekarma] somewhere on your website.
 
 == Frequently Asked Questions ==
 
