@@ -16,10 +16,6 @@ class carnieKarmaUsersView {
 
                 $karma_list_nonce = wp_create_nonce('karma_list_nonce');
 
-?>
-        <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
-                <input type="hidden" name="karma_list_nonce" value="<?php echo $karma_list_nonce; ?>" />
-<?php
 
 		print "<UL>";
 		
@@ -28,6 +24,11 @@ class carnieKarmaUsersView {
 		foreach ($users as $user) {
 			if ($user->ID != 1) {
 				print "<LI>";
+?>
+        <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+                <input type="hidden" name="karma_list_nonce" value="<?php echo $karma_list_nonce; ?>" />
+                <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
+<?php
 				$name = $user->display_name;
 				$user_info = get_userdata($user->ID);
 				if ($user_info->first_name || $user_info->last_name) {
@@ -36,18 +37,18 @@ class carnieKarmaUsersView {
 				echo $name;
 				
 ?>
-                <input type="submit" name="user_id" value="<?php echo $user->ID; ?>">Karma</input>
+                <input type="submit" value="Details" />
 <?php
 				if ($user_info->user_description) {
 					echo '<div class="details">' . $user_info->user_description . '</div>';
 				}
+				print "</form>";
 
 				print "</LI>";
 			}
 		}
 
 		print "</UL>";
-		print "</form>";
 	}
 }
 ?>
