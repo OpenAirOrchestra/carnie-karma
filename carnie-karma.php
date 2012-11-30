@@ -108,7 +108,7 @@ class carnieKarma {
 	</p>
 
 	<p>
-	Karma and karmic load evaporates gradually, with a half life
+	Karma and karmic load evaporate gradually, with a half life
 	of about a year.  The math looks like this: 
 	<blockquote>
 	<code> 0.998 <sup>elapsed days</sup> </code>
@@ -117,7 +117,7 @@ class carnieKarma {
 
 	<p>
 	Here is a pretty graph of how a single dew-drop of karma
-	dwindles over a three year span.
+	dwindles over a three year span of days.
 	</p>
 
 	<a href="<?php echo get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/images/decay.jpg'; ?>">
