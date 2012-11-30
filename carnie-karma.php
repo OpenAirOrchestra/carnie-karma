@@ -80,9 +80,52 @@ class carnieKarma {
 		if ($user_id) {
 			$userView = new carnieKarmaUserView;
 			$userView->render($user_id);
+			$this->explain_karma();
 		} else {
 			$this->list_users();
 		}
+	}
+
+        /*
+	 * prints a short explanation of Karnie Karmic Decay
+         */
+        function explain_karma() {
+?>
+	<h2>Participation Karma Explained</h2>
+
+	<p>
+	Participation Karma is a beautiful mystery.  It accrues with
+	participation in gigs and workshops, so as you participate, you
+	get more karma.  It evaporates (sublimes?)
+	over time, so what you have done lately matters more than
+	what you have done in the distant past. 
+	Karma from gigs and karma from workshops is wieghted differently.
+	</p>
+	<p>
+	When the band funds
+	you on tour, it incurrs karmic load, which weighs against
+	karma accrued.  Karmic load, too, evaporates over time.
+	</p>
+
+	<p>
+	Karma and karmic load evaporates gradually, with a half life
+	of about a year.  The math looks like this: 
+	<blockquote>
+	<code> 0.998 <sup>elapsed days</sup> </code>
+	</blockquote>
+	</p>
+
+	<p>
+	Here is a pretty graph of how a single dew-drop of karma
+	dwindles over a three year span.
+	</p>
+
+	<a href="<?php echo get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/images/decay.jpg'; ?>">
+	<img src="<?php echo get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/images/decay.jpg'; ?>"/>
+	</a>
+	
+
+<?php
 	}
 
 };
