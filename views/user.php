@@ -33,6 +33,13 @@ class carnieKarmaUserView {
 		print "<p>Not Done Yet</p>";
 	}
 
+	/*
+ 	 * Renders Karmic balance
+	 */
+	function render_balance($user_id) {
+		print "<h3>Karmic Balance</h3>";
+		print "<p>Not Done Yet</p>";
+	}
 
 	/*
  	 * Renders a summary karma report for single user.
@@ -68,6 +75,9 @@ class carnieKarmaUserView {
 
 		// Tour karma burned
 		$this->render_tour_summary($user_id);
+
+		// Karmic Balance
+		$this->render_balance($user_id);
 	}
 }
 ?>
