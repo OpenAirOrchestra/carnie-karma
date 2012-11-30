@@ -29,19 +29,18 @@ class carnieKarmaUsersView {
                 <input type="hidden" name="karma_list_nonce" value="<?php echo $karma_list_nonce; ?>" />
                 <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
 <?php
-				$name = $user->display_name;
 				$user_info = get_userdata($user->ID);
 				if ($user_info->first_name || $user_info->last_name) {
-					$name = $user_info->first_name . ' ' . $user_info->last_name;
+					echo $user_info->first_name . ' ' . $user_info->last_name;
+					echo ' (' . $user->user_login . ')';
+				} else {
+					echo $user->display_name;
+					echo ' (' . $user->user_login . ')';
 				}
-				echo $name;
 				
 ?>
                 <input type="submit" value="Details" />
 <?php
-				if ($user_info->user_description) {
-					echo '<div class="details">' . $user_info->user_description . '</div>';
-				}
 				print "</form>";
 
 				print "</LI>";

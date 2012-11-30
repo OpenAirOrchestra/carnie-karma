@@ -30,6 +30,7 @@ $include_folder = dirname(__FILE__);
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 require_once $include_folder . '/views/users.php';
+require_once $include_folder . '/views/user.php';
 
 /*
  * Main class for Carnie Karma Handles activation, hooks, etc.
@@ -77,7 +78,8 @@ class carnieKarma {
 		}
 
 		if ($user_id) {
-			echo "<h2>Participation Karma for " . $user_id . "</h2>"; 
+			$userView = new carnieKarmaUserView;
+			$userView->render($user_id);
 		} else {
 			$this->list_users();
 		}
