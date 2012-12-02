@@ -104,6 +104,30 @@ sss for that user.
 		$usersView->render($users);
 	}
 
+	/*
+	 * Renders karma for a user, linking to detailed karma reports
+	 */
+	function render_user($user_id) {
+		
+		global $wpdb;
+
+		// Create table for verified attendees
+		$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
+
+		$sql = $wpdb->prepare(
+			"
+			SELECT COUNT(  workshop_id ) AS workshops , SUM(  karma ) AS workshop_karma
+			  FROM  $workshop_karma_view_name
+			  WHERE  user_id = %d
+			",
+			$user_id
+			);
+		$row = $wpdb->get_row($sql, ARRAY_A);
+		$userView = new carnieKarmaUserView;
+		$userView->render($user_id, $row['workshops'], $row['workshop_karma']);
+		$this->explain_karma();
+	}
+
         /*
          * Handles carniekarma shortcode
          * examples:
@@ -127,9 +151,7 @@ sss for that user.
 		}
 
 		if ($user_id) {
-			$userView = new carnieKarmaUserView;
-			$userView->render($user_id);
-			$this->explain_karma();
+			$this->render_user($user_id);
 		} else {
 			$this->list_users();
 		}

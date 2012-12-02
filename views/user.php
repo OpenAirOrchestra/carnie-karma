@@ -19,9 +19,13 @@ class carnieKarmaUserView {
  	 * Renders a summary of users' workshop participation karma 
 	 * with link to detailed table
 	 */
-	function render_workshop_summary($user_id) {
+	function render_workshop_summary($user_id, $workshops, $workshop_karma) {
 		print "<h3>Workshop Participation Karma</h3>";
-		print "<p>Not Done Yet</p>";
+		print "<p>";
+		echo "Workshops: " . ($workshops ? $workshops : 0);
+		print "<br/>";
+		echo "Workshop Participation Karma: " . ($workshop_karma ? $workshop_karma : 0);
+		print "</p>";
 	}
 
 	/*
@@ -45,7 +49,7 @@ class carnieKarmaUserView {
  	 * Renders a summary karma report for single user.
 	 * with links to detailed tables
 	 */
-	function render($user_id) {
+	function render($user_id, $workshops, $workshop_karma) {
                 $user_info = get_userdata($user_id);
 
                 $siteurl = get_bloginfo('siteurl');
@@ -68,7 +72,7 @@ class carnieKarmaUserView {
 		print "</h2>";
 
 		// Workshop participation Karma
-		$this->render_workshop_summary($user_id);
+		$this->render_workshop_summary($user_id, $workshops, $workshop_karma);
 
 		// Gig participation Karma
 		$this->render_gig_summary($user_id);
