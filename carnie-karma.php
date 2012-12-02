@@ -31,6 +31,7 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 require_once $include_folder . '/views/users.php';
 require_once $include_folder . '/views/user.php';
+require_once $include_folder . '/version.php';
 
 /*
  * Main class for Carnie Karma Handles activation, hooks, etc.
@@ -42,12 +43,60 @@ class carnieKarma {
          * Here we will create table views needed for karma calculation
          */
         function activate() {
+                $version = get_option("carniekarma_db_version");
+
+		if ($version) {
+			// Do upgrades
+
+			update_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
+		} else {
+			// Create views
+                        global $wpdb;
+
+                        // Create table for verified attendees
+                        $workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
+                        $workshops_name = $wpdb->prefix . "workshops";
+                        $workshop_attendance_name = $wpdb->prefix . "workshop_attendance";
+
+			$sql = "CREATE VIEW " .
+				$workshop_karma_view_name . 
+				" AS SELECT " .
+				$workshops_name . ".id AS workshop_id, " .
+				$workshops_name . ".title AS title, " .
+				$workshops_name . ".date AS date, " .
+				$workshop_attendance_name . ".user_id AS user_id, " .
+				"POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , " . $workshops_name . ".date ) ) ) AS karma " .
+				"FROM " .
+				$workshops_name . " , " . $workshop_attendance_name . " " . 
+				"WHERE " .
+				$workshops_name . ".id = " . $workshop_attendance_name . ".workshopid ";
+
+
+			/*
+			CREATE VIEW 
+				wp_workshop_karma
+			AS
+			SELECT 
+				wp_workshops.id AS workshop_id, 
+				wp_workshops.title AS title, 
+				wp_workshops.date AS DATE, 
+				wp_workshop_attendance.user_id AS user_id, 
+				POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , wp_workshops.date ) )) AS karma
+			FROM 
+				wp_workshops, wp_workshop_attendance
+			WHERE 
+				wp_workshop_attendance.workshopid = wp_workshops.id
+			*/
+			$wpdb->query($sql);
+			
+			add_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
+		}
 
 	}
 
 	/*
-	 * Renders a list of users, each linking to a karma report
-	 * for that user.
+	 * Renders a list of users, each linking to a karma repors
+sss for that user.
 	 */
 	function list_users() {
 		$users = get_users('orderby=nicename');
