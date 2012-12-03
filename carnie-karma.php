@@ -111,21 +111,34 @@ sss for that user.
 		
 		global $wpdb;
 
-		// Create table for verified attendees
-		$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
+                $karma_list_nonce = $_REQUEST['karma_list_nonce'];
+                if ( wp_verify_nonce($karma_list_nonce, 'karma_list_nonce') ) {
+			$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
 
-		$sql = $wpdb->prepare(
-			"
-			SELECT COUNT(  workshop_id ) AS workshops , SUM(  karma ) AS workshop_karma
-			  FROM  $workshop_karma_view_name
-			  WHERE  user_id = %d
-			",
-			$user_id
-			);
-		$row = $wpdb->get_row($sql, ARRAY_A);
-		$userView = new carnieKarmaUserView;
-		$userView->render($user_id, $row['workshops'], $row['workshop_karma']);
+			// Get summary data
+			$sql = $wpdb->prepare(
+				"
+				SELECT COUNT(  workshop_id ) AS workshops , SUM(  karma ) AS workshop_karma
+				  FROM  $workshop_karma_view_name
+				  WHERE  user_id = %d
+				",
+				$user_id
+				);
+			$row = $wpdb->get_row($sql, ARRAY_A);
+			$userView = new carnieKarmaUserView;
+			$userView->render($user_id, $row['workshops'], $row['workshop_karma']);
+		} else {
+			echo "<h2>Security error: nonce</h2>";
+		}
+
 		$this->explain_karma();
+	}
+
+	/*
+	 * Do a detailed karma of a type for a user
+	 */
+	function detail($user_id, $type) {
+		echo "<h2>Detail it</h2>";
 	}
 
         /*
@@ -150,7 +163,9 @@ sss for that user.
 			$user_id = $_REQUEST['user_id'];
 		}
 
-		if ($user_id) {
+		if ($_REQUEST['karma_detail']) {
+			$this->detail($user_id, $_REQUEST['karma_detail']);
+		} else if ($user_id) {
 			$this->render_user($user_id);
 		} else {
 			$this->list_users();
