@@ -138,7 +138,25 @@ sss for that user.
 	 * Do a detailed karma of a type for a user
 	 */
 	function detail($user_id, $type) {
-		echo "<h2>Detail it</h2>";
+                $karma_detail_nonce = $_REQUEST['karma_detail_nonce'];
+                if ( wp_verify_nonce($karma_detail_nonce, 'karma_detail_nonce') ) {
+
+			$karma_detail = $_REQUEST['karma_detail'];
+
+			if (strcmp($karma_detail, "workshop") == 0) {
+				echo "<h2>Workshop Participation Karma For </h2>";
+			} else if (strcmp($karma_detail, "gig") == 0) {
+				echo "<h2>Gig Participation Karma For </h2>";
+			} else if (strcmp($karma_detail, "load") == 0) {
+				echo "<h2>Karma Load For </h2>";
+			} else {
+				echo "<h2>Error, unknown karma detail type</h2>";
+			}
+
+
+		} else {
+			echo "<h2>Security error: nonce</h2>";
+		}
 	}
 
         /*
