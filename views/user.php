@@ -29,17 +29,15 @@ class carnieKarmaUserView {
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 			<input type="hidden" name="karma_detail" value="workshop" />
 			<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+			<input type="hidden" name="karma_workshop_summary_nonce" value="<?php echo $karma_workshop_summary_nonce; ?>" />
 			<p>
-<?php
-		echo "Workshops: " . ($workshops ? $workshops : 0);
-		print "<br/>";
-		echo "Workshop Participation Karma: " . ($workshop_karma ? $workshop_karma : 0);
-?>
-                <input type="hidden" name="karma_workshop_summary_nonce" value="<?php echo $karma_workshop_summary_nonce; ?>" />
-		<br/>
-                <input type="submit" value="Details" />
-		</p>
-	</form>
+				Workshops: <?php echo ($workshops ? $workshops : 0); ?>
+				<br/>
+				Workshop Participation Karma: <?php echo ($workshop_karma ? $workshop_karma : 0); ?>
+				<br/>
+                		<input type="submit" value="Details" />
+			</p>
+		</form>
 <?php
 
 	}
@@ -59,6 +57,7 @@ class carnieKarmaUserView {
 	function render_balance($user_id) {
 		print "<h3>Karmic Balance</h3>";
 		print "<p>Not Done Yet</p>";
+		print "<p>To calculate Karmic Balance, expect some math like <br/>500 * workshop karma + 1000 * gig karma - tour karmic load</p>";
 	}
 
 	/*
