@@ -113,8 +113,11 @@ sss for that user.
 		
 		global $wpdb;
 
+		$current_user = wp_get_current_user();
+
                 $karma_list_nonce = $_REQUEST['karma_list_nonce'];
-                if ( wp_verify_nonce($karma_list_nonce, 'karma_list_nonce') ) {
+                if ( ($user_id == $current_user->ID) ||
+		     (wp_verify_nonce($karma_list_nonce, 'karma_list_nonce')) ) {
 			$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
 
 			// Get summary data

@@ -4,6 +4,20 @@
  * Renders a workshop karma report for a user.
  */       
 class carnieKarmaWorkshopsView {
+
+        /*
+         * render table header/footer
+         */
+        function render_table_header_footer() {
+?>
+                <tr>
+			<th>Date</th>
+			<th>Title</th>
+			<th>Karma</th>
+                </tr>
+<?php
+	}
+
  
 	/*
  	 * Renders a workshop karma report for a user.
@@ -29,12 +43,19 @@ class carnieKarmaWorkshopsView {
 		}
 		print "</h2>";
 
-		echo "<table>";
+		print "<table>";
+		print "<thead>";
+		$this->render_table_header_footer();
+		print "</thead>";
+		print "<tfoot>";
+		$this->render_table_header_footer();
+		print "</tfoot>";
+		print "<tbody>";
 		foreach ($workshops as $workshop) {
 
 			$workshop_url = $siteurl . '/wp-admin/admin.php?page=workshop&workshop=' . $workshop['workshop_id'];
 
-			echo "<tr>";
+			print "<tr>";
 			echo "<td>" .  $workshop['date'] . " </td>";
 			echo "<td>";
 			echo '<a href="' . $workshop_url . '">';
@@ -42,9 +63,10 @@ class carnieKarmaWorkshopsView {
 			echo "</a>";
 			echo "</td>";
 			echo "<td>" .  $workshop['karma'] . " </td>";
-			echo "</tr>";
+			print "</tr>";
 		}
-		echo "</table>";
+		print "</tbody>";
+		print "</table>";
 	}
 }
 ?>
