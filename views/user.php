@@ -20,12 +20,28 @@ class carnieKarmaUserView {
 	 * with link to detailed table
 	 */
 	function render_workshop_summary($user_id, $workshops, $workshop_karma) {
-		print "<h3>Workshop Participation Karma</h3>";
-		print "<p>";
+
+                $karma_workshop_summary_nonce = wp_create_nonce('karma_workshop_summary_nonce');
+
+?>
+		<h3>Workshop Participation Karma</h3>
+
+		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+			<input type="hidden" name="karma_detail" value="workshop" />
+			<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+			<p>
+<?php
 		echo "Workshops: " . ($workshops ? $workshops : 0);
 		print "<br/>";
 		echo "Workshop Participation Karma: " . ($workshop_karma ? $workshop_karma : 0);
-		print "</p>";
+?>
+                <input type="hidden" name="karma_workshop_summary_nonce" value="<?php echo $karma_workshop_summary_nonce; ?>" />
+		<br/>
+                <input type="submit" value="Details" />
+		</p>
+	</form>
+<?php
+
 	}
 
 	/*
