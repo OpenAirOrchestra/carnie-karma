@@ -28,13 +28,8 @@ class carnieKarmaWorkshopsController {
 
 		$results = $wpdb->get_results($sql, ARRAY_A);
 
-                echo "<h2>TODO: Workshop Participation Karma For User " . $user_id . "</h2>";
-
-		echo "<ul>";
-		foreach ($results as $row) {
-			echo "<li> workshop </li>";
-		}
-		echo "</ul>";
+		$workshopsView = new carnieKarmaWorkshopsView;
+		$workshopsView->render($user_id, $results);
 	}
 }
 ?>
