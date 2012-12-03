@@ -16,6 +16,16 @@ class carnieKarmaWorkshopsController {
 
 		// Get paged and limit
 		$paged = $_REQUEST['paged'];
+		if ($_REQUEST['submit-first-page']) {
+			$paged = $_REQUEST['first-page'];
+		} else if ($_REQUEST['submit-previous-page']) {
+			$paged = $_REQUEST['previous-page'];
+		} else if ($_REQUEST['submit-next-page']) {
+			$paged = $_REQUEST['next-page'];
+		} else if ($_REQUEST['submit-last-page']) {
+			$paged = $_REQUEST['last-page'];
+		} 
+
 		if (! $paged) {
 			$paged = 1;
 		}
