@@ -31,6 +31,7 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 require_once $include_folder . '/views/users.php';
 require_once $include_folder . '/views/user.php';
+require_once $include_folder . '/controllers/workshops.php';
 require_once $include_folder . '/version.php';
 
 /*
@@ -135,7 +136,29 @@ sss for that user.
 	}
 
 	/*
-	 * Do a detailed karma of a type for a user
+	 * Do a detailed report of workshop karma for a user
+	 */
+	function workshop_detail($user_id) {
+		$workshopsController = new carnieKarmaWorkshopsController;
+		$workshopsController->report($user_id);
+	}
+
+	/*
+	 * Do a detailed report of gig karma for a user
+	 */
+	function gig_detail($user_id) {
+		echo "<h2>TODO: Gig Participation Karma For User " . $user_id . "</h2>";
+	}
+
+	/*
+	 * Do a detailed report of karmic load for a user
+	 */
+	function load_detail($user_id) {
+		echo "<h2>TODO: Karmic Load  For User " . $user_id . "</h2>";
+	}
+
+	/*
+	 * Do a detailed report of karma of a type for a user
 	 */
 	function detail($user_id, $type) {
                 $karma_detail_nonce = $_REQUEST['karma_detail_nonce'];
@@ -144,16 +167,14 @@ sss for that user.
 			$karma_detail = $_REQUEST['karma_detail'];
 
 			if (strcmp($karma_detail, "workshop") == 0) {
-				echo "<h2>Workshop Participation Karma For </h2>";
+				$this->workshop_detail($user_id);
 			} else if (strcmp($karma_detail, "gig") == 0) {
-				echo "<h2>Gig Participation Karma For </h2>";
+				$this->gig_detail($user_id);
 			} else if (strcmp($karma_detail, "load") == 0) {
-				echo "<h2>Karma Load For </h2>";
+				$this->load_detail($user_id);
 			} else {
 				echo "<h2>Error, unknown karma detail type</h2>";
 			}
-
-
 		} else {
 			echo "<h2>Security error: nonce</h2>";
 		}
