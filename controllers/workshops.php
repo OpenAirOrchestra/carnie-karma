@@ -28,8 +28,19 @@ class carnieKarmaWorkshopsController {
 
 		$results = $wpdb->get_results($sql, ARRAY_A);
 
+		// what's to total count of all workshops?
+		$sql = $wpdb->prepare(
+			"
+			SELECT COUNT(*)
+			  FROM  $workshop_karma_view_name
+			  WHERE  user_id = %d
+			",
+			$user_id
+			);
+		$count = $wpdb->get_var($sql);
+
 		$workshopsView = new carnieKarmaWorkshopsView;
-		$workshopsView->render($user_id, $results);
+		$workshopsView->render($user_id, $results, $count);
 	}
 }
 ?>
