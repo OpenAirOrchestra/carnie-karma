@@ -31,9 +31,16 @@ class carnieKarmaWorkshopsView {
 
 		echo "<table>";
 		foreach ($workshops as $workshop) {
+
+			$workshop_url = $siteurl . '/wp-admin/admin.php?page=workshop&workshop=' . $workshop['workshop_id'];
+
 			echo "<tr>";
 			echo "<td>" .  $workshop['date'] . " </td>";
-			echo "<td>" .  $workshop['title'] . " </td>";
+			echo "<td>";
+			echo '<a href="' . $workshop_url . '">';
+			echo $workshop['title'];
+			echo "</a>";
+			echo "</td>";
 			echo "<td>" .  $workshop['karma'] . " </td>";
 			echo "</tr>";
 		}
