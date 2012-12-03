@@ -6,52 +6,55 @@
 class carnieKarmaWorkshopsView {
 
 	/*
-	 * TODO
-  	 */
-	function current_request_with_params() {
-		return "TODO";
-	}
-
-	/*
          * render table navigation top
          */
-        function render_table_nav( $position, $count, $paged, $limit ) {
+        function render_table_nav( $position, $karma_detail, $karma_detail_nonce, $user_id, $count, $paged, $limit ) {
 
 		$total_pages = ceil($count / $limit);
 
-		$first_page = $this->current_request_with_params( array('paged' => 1 ) );
-
+		$first_paged = 1;
 		$prev_page = $first_page;
 
 	        if ($paged > 1) {
-			$prev_page = $this->current_request_with_params( 
-				array('paged' => $paged - 1 ) );
+			$prev_page = $paged - 1;
 		}
-		$last_page = $this->current_request_with_params(
-			array('paged' => $total_pages ) );
+		$last_page = $total_pages;
 		$next_page = $last_page;
+
 		if ($paged < $total_pages) {
-			$next_page = $this->current_request_with_params( 
-				array('paged' => $paged + 1 ) );
+			$next_page = $paged + 1;
 		}
 ?>
 		<div class="tablenav <?php echo $position; ?>">
 			<div class="tablenav-pages">
+	                <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 				<span class="displaying-num"><?php echo $count; ?> items</span>
 				<span class="pagination-links">
-					<a class="first-page" title="Go to the first page" href="<?php echo $first_page; ?>">&laquo;</a>
-					<a class="prev-page" title="Go to the previous page" href="<?php echo $prev_page?>">&lsaquo;</a>
+
+		                        <input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+		                        <input type="hidden" name="karma_detail" value="workshop" />
+		                        <input type="hidden" name="karma_detail_nonce" value="<?php echo $karma_detail_nonce; ?>" />
+
+					<input type="hidden" name="first-page" value="<?php echo $first_page; ?>" />
+					<input type="hidden" name="previous-page" value="<?php echo $prev_page; ?>" />
+					<input type="hidden" name="next-page" value="<?php echo $next_page; ?>" />
+					<input type="hidden" name="last-page" value="<?php echo $last_page; ?>" />
+
+					<input type="submit" name="submit-first-page" value="&laquo;" />
+					<input type="submit" name="submit-previous-page" value="&lsaquo;" />
+
 					 <span class='current-pages'>
 					 <?php echo $paged; ?>
 					</span>
 					 of <span class='total-pages'>
 					 <?php echo $total_pages; ?> </span>
 
-					<a class="next-page" title="Go to the next page" href="<?php echo $next_page; ?>">&rsaquo;</a>
-					<a class="last-page" title="Go to the last page" href="<?php echo $last_page; ?>">&raquo;</a>
+					<input type="submit" name="submit-next-page" value="&rsaquo;" />
+					<input type="submit" name="submit-last-page" value="&raquo;" />
 				</span>
+
+			</form>
 			</div>
-			<br class="clear"/>
 		</div>
 <?php
 	}
@@ -94,8 +97,9 @@ class carnieKarmaWorkshopsView {
 		}
 		print "</h2>";
 
+                $karma_detail_nonce = wp_create_nonce('karma_detail_nonce');
 
-		$this->render_table_nav("top", $count, $paged, $limit);
+		$this->render_table_nav("top", "workshop", $karma_detail_nonce, $user_id, $count, $paged, $limit);
 
 		print "<table>";
 		print "<thead>";
@@ -123,7 +127,7 @@ class carnieKarmaWorkshopsView {
 		print "</table>";
 
 
-		$this->render_table_nav("top", $count, $paged, $limit);
+		$this->render_table_nav("top", "workshop", $karma_detail_nonce, $user_id, $count, $paged, $limit);
 
 	}
 }
