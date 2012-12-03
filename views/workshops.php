@@ -5,6 +5,57 @@
  */       
 class carnieKarmaWorkshopsView {
 
+	/*
+	 * TODO
+  	 */
+	function current_request_with_params() {
+		return "TODO";
+	}
+
+	/*
+         * render table navigation top
+         */
+        function render_table_nav( $position, $count, $paged, $limit ) {
+
+		$total_pages = ceil($count / $limit);
+
+		$first_page = $this->current_request_with_params( array('paged' => 1 ) );
+
+		$prev_page = $first_page;
+
+	        if ($paged > 1) {
+			$prev_page = $this->current_request_with_params( 
+				array('paged' => $paged - 1 ) );
+		}
+		$last_page = $this->current_request_with_params(
+			array('paged' => $total_pages ) );
+		$next_page = $last_page;
+		if ($paged < $total_pages) {
+			$next_page = $this->current_request_with_params( 
+				array('paged' => $paged + 1 ) );
+		}
+?>
+		<div class="tablenav <?php echo $position; ?>">
+			<div class="tablenav-pages">
+				<span class="displaying-num"><?php echo $count; ?> items</span>
+				<span class="pagination-links">
+					<a class="first-page" title="Go to the first page" href="<?php echo $first_page; ?>">&laquo;</a>
+					<a class="prev-page" title="Go to the previous page" href="<?php echo $prev_page?>">&lsaquo;</a>
+					 <span class='current-pages'>
+					 <?php echo $paged; ?>
+					</span>
+					 of <span class='total-pages'>
+					 <?php echo $total_pages; ?> </span>
+
+					<a class="next-page" title="Go to the next page" href="<?php echo $next_page; ?>">&rsaquo;</a>
+					<a class="last-page" title="Go to the last page" href="<?php echo $last_page; ?>">&raquo;</a>
+				</span>
+			</div>
+			<br class="clear"/>
+		</div>
+<?php
+	}
+
         /*
          * render table header/footer
          */
@@ -43,6 +94,13 @@ class carnieKarmaWorkshopsView {
 		}
 		print "</h2>";
 
+		// TODO: nuke these
+		$count = 40;
+		$paged = 1;
+		$limit = 30;
+
+		$this->render_table_nav("top", $count, $paged, $limit);
+
 		print "<table>";
 		print "<thead>";
 		$this->render_table_header_footer();
@@ -67,6 +125,10 @@ class carnieKarmaWorkshopsView {
 		}
 		print "</tbody>";
 		print "</table>";
+
+
+		$this->render_table_nav("top", $count, $paged, $limit);
+
 	}
 }
 ?>
