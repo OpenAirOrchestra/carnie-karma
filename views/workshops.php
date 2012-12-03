@@ -8,13 +8,28 @@ class carnieKarmaWorkshopsView {
 	/*
  	 * Renders a workshop karma report for a user.
 	 */
-	function render($users_id, $workshops) {
+	function render($user_id, $workshops) {
 
-                echo "<h2>TODO: Workshop Participation Karma For User " . $user_id . "</h2>";
+                $user_info = get_userdata($user_id);
+
+		// Title
+		print "<h2>Workshop Participation Karma for "; 
+		if ($user_info->first_name || $user_info->last_name) {
+			echo $user_info->first_name . ' ' . $user_info->last_name;
+			echo ' (<a href="' . $edit_url . '">' .
+				$user_info->user_login . 
+				'</a>)';
+		} else {
+			echo $user->display_name;
+			echo ' (<a href="' . $edit_url . '">' .
+				$user_info->user_login . 
+				'</a>)';
+		}
+		print "</h2>";
 
 		echo "<ul>";
-		foreach ($workshops as $workshops) {
-			echo "<li> workshop karma summary </li>";
+		foreach ($workshops as $workshop) {
+			echo "<li>" .  $workshop['title'] . " </li>";
 		}
 		echo "</ul>";
 	}
