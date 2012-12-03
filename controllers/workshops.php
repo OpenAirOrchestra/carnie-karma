@@ -14,6 +14,17 @@ class carnieKarmaWorkshopsController {
 
 		$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
 
+		// Get paged and limit
+		$paged = $_REQUEST['paged'];
+		if (! $paged) {
+			$paged = 1;
+		}
+		$limit = $_REQUEST['limit'];
+		if (! $limit) {
+			$limit = 30;
+		}
+		$offset = $limit * ($paged - 1);
+
 		// Get all the data (paged view will come later)
 
 		$sql = $wpdb->prepare(
@@ -22,8 +33,9 @@ class carnieKarmaWorkshopsController {
 			  FROM  $workshop_karma_view_name
 			  WHERE  user_id = %d
 			  ORDER BY date DESC
+			  LIMIT %d, %d
 			",
-			$user_id
+			$user_id, $offset, $limit
 			);
 
 		$results = $wpdb->get_results($sql, ARRAY_A);
@@ -40,7 +52,7 @@ class carnieKarmaWorkshopsController {
 		$count = $wpdb->get_var($sql);
 
 		$workshopsView = new carnieKarmaWorkshopsView;
-		$workshopsView->render($user_id, $results, $count);
+		$workshopsView->render($user_id, $results, $count, $paged, $limit);
 	}
 }
 ?>

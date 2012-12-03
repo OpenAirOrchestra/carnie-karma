@@ -73,7 +73,7 @@ class carnieKarmaWorkshopsView {
 	/*
  	 * Renders a workshop karma report for a user.
 	 */
-	function render($user_id, $workshops, $count) {
+	function render($user_id, $workshops, $count, $paged, $limit) {
 
                 $siteurl = get_bloginfo('siteurl');
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
@@ -94,9 +94,6 @@ class carnieKarmaWorkshopsView {
 		}
 		print "</h2>";
 
-		// TODO: nuke these
-		$paged = 1;
-		$limit = 30;
 
 		$this->render_table_nav("top", $count, $paged, $limit);
 
