@@ -10,6 +10,8 @@ class carnieKarmaWorkshopsView {
 	 */
 	function render($user_id, $workshops) {
 
+                $siteurl = get_bloginfo('siteurl');
+		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
                 $user_info = get_userdata($user_id);
 
 		// Title
@@ -27,11 +29,15 @@ class carnieKarmaWorkshopsView {
 		}
 		print "</h2>";
 
-		echo "<ul>";
+		echo "<table>";
 		foreach ($workshops as $workshop) {
-			echo "<li>" .  $workshop['title'] . " </li>";
+			echo "<tr>";
+			echo "<td>" .  $workshop['date'] . " </td>";
+			echo "<td>" .  $workshop['title'] . " </td>";
+			echo "<td>" .  $workshop['karma'] . " </td>";
+			echo "</tr>";
 		}
-		echo "</ul>";
+		echo "</table>";
 	}
 }
 ?>
