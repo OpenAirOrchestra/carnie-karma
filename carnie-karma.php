@@ -237,8 +237,11 @@ sss for that user.
 	</p>
 
 	<p>
-	Karma and karmic load evaporate gradually, with a half life
-	of about a year.  The math looks like this: 
+	Karma and karmic load evaporate gradually, 
+	with a half life of about a year.  
+	That means that all karma values diminish to about
+	half of their original value after one year has elapsed.
+	The math looks like this: 
 	<blockquote>
 	<code> 0.998 <sup>elapsed days</sup> </code>
 	</blockquote>
