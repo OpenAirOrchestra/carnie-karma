@@ -33,6 +33,7 @@ require_once $include_folder . '/views/users.php';
 require_once $include_folder . '/views/user.php';
 require_once $include_folder . '/views/workshops.php';
 require_once $include_folder . '/controllers/workshops.php';
+require_once $include_folder . '/controllers/gigs.php';
 require_once $include_folder . '/version.php';
 
 /*
@@ -216,7 +217,8 @@ sss for that user.
 	 * Do a detailed report of gig karma for a user
 	 */
 	function gig_detail($user_id) {
-		echo "<h2>TODO: Gig Participation Karma For User " . $user_id . "</h2>";
+		$gigsController = new carnieKarmaGigsController;
+		$gigsController->report($user_id);
 	}
 
 	/*
