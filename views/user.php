@@ -10,18 +10,32 @@ class carnieKarmaUserView {
  	 * Renders a summary of users' gig participation karma 
 	 * with link to detailed table
 	 */
-	function render_gig_summary($user_id) {
-		print "<h3>Gig Participation Karma</h3>";
-		print "<p>Not Done Yet</p>";
+	function render_gig_summary($user_id, $gigs, $gig_karma, $karma_detail_nonce) {
+?>
+		<h3>Verified Gig Participation Karma</h3>
+
+		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+			<input type="hidden" name="karma_detail" value="gig" />
+			<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+			<input type="hidden" name="karma_detail_nonce" value="<?php echo $karma_detail_nonce; ?>" />
+			<p>
+				Verified Gigs: <?php echo ($gigs ? $gigs : 0); ?>
+				<br/>
+				Verified Gig Participation Karma: <?php echo ($gig_karma ? $gig_karma : 0); ?>
+				<br/>
+                		<input type="submit" value="Details" />
+			</p>
+		</form>
+<?php
+
 	}
 
 	/*
  	 * Renders a summary of users' workshop participation karma 
 	 * with link to detailed table
 	 */
-	function render_workshop_summary($user_id, $workshops, $workshop_karma) {
+	function render_workshop_summary($user_id, $workshops, $workshop_karma, $karma_detail_nonce) {
 
-                $karma_detail_nonce = wp_create_nonce('karma_detail_nonce');
 
 ?>
 		<h3>Workshop Participation Karma</h3>
@@ -64,7 +78,7 @@ class carnieKarmaUserView {
  	 * Renders a summary karma report for single user.
 	 * with links to detailed tables
 	 */
-	function render($user_id, $workshops, $workshop_karma) {
+	function render($user_id, $workshops, $workshop_karma, $gigs, $gig_karma) {
                 $user_info = get_userdata($user_id);
 
                 $siteurl = get_bloginfo('siteurl');
@@ -86,11 +100,13 @@ class carnieKarmaUserView {
 		}
 		print "</h2>";
 
+                $karma_detail_nonce = wp_create_nonce('karma_detail_nonce');
+
 		// Workshop participation Karma
-		$this->render_workshop_summary($user_id, $workshops, $workshop_karma);
+		$this->render_workshop_summary($user_id, $workshops, $workshop_karma, $karma_detail_nonce);
 
 		// Gig participation Karma
-		$this->render_gig_summary($user_id);
+		$this->render_gig_summary($user_id, $gigs, $gig_karma, $karma_detail_nonce);
 
 		// Tour karma burned
 		$this->render_tour_summary($user_id);
