@@ -32,6 +32,7 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 require_once $include_folder . '/views/users.php';
 require_once $include_folder . '/views/user.php';
 require_once $include_folder . '/views/workshops.php';
+require_once $include_folder . '/views/tables.php';
 require_once $include_folder . '/controllers/workshops.php';
 require_once $include_folder . '/controllers/gigs.php';
 require_once $include_folder . '/version.php';
