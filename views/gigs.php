@@ -29,7 +29,13 @@ class carnieKarmaGigsView {
                 $user_info = get_userdata($user_id);
 
 		// Title
-		print "<h2>Verified Gig Participation Karma for "; 
+		$karma_list_nonce = wp_create_nonce('karma_list_nonce');
+?>
+        <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+                <input type="hidden" name="karma_list_nonce" value="<?php echo $karma_list_nonce; ?>" />
+                <input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+		<h2>Verified Gig Participation Karma for 
+<?php
 		if ($user_info->first_name || $user_info->last_name) {
 			echo $user_info->first_name . ' ' . $user_info->last_name;
 			echo ' (<a href="' . $edit_url . '">' .
@@ -41,7 +47,11 @@ class carnieKarmaGigsView {
 				$user_info->user_login . 
 				'</a>)';
 		}
-		print "</h2>";
+?>
+                <input type="submit" value="Summary"/>
+		</h2>
+        </form>
+<?php
 
                 $karma_detail_nonce = wp_create_nonce('karma_detail_nonce');
 

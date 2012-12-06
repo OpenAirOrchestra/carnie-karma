@@ -40,8 +40,8 @@ class carnieKarmaUsersView {
 				
 ?>
                 <input type="submit" value="Details" />
+	</form>
 <?php
-				print "</form>";
 
 				print "</LI>";
 			}
