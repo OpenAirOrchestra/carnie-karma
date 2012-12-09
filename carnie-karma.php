@@ -50,9 +50,8 @@ class carnieKarma {
         function activate() {
                 $version = get_option("carniekarma_db_version");
 
-		if ($version) {
-			// Do upgrades
-
+	 	if ($version) {
+			// Do upgrades 
 			update_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
 		} else {
 			// Create views
@@ -138,6 +137,29 @@ class carnieKarma {
 					AND $postmeta_name.meta_key =  \"cbg_date\"
 					AND ( $gig_attendance_name.deleted IS NULL OR  $gig_attendance_name.deleted = 0 )
 			";
+
+			$wpdb->query($sql);
+
+			// Create tables for Karmic Load and Karmic Load Metadata
+			$table_name = $wpdb->prefix . "karmic_load";
+                        $sql = "CREATE TABLE $table_name (
+                                id bigint(20) NOT NULL AUTO_INCREMENT,
+                                user_id bigint(20) ,
+                        	date date DEFAULT '0000-00-00' NOT NULL,
+                                initial_load bigint(20),
+                                notes text,
+                                deleted smallint(6),
+                                UNIQUE KEY id (id) );";
+
+			$wpdb->query($sql);
+
+			$table_name = $wpdb->prefix . "karmic_loadmeta";
+                        $sql = "CREATE TABLE $table_name (
+                                meta_id bigint(20) NOT NULL AUTO_INCREMENT,
+                                load_id bigint(20) ,
+                                meta_key text NOT NULL,
+                                meta_value text,
+                                UNIQUE KEY meta_id (meta_id) );";
 
 			$wpdb->query($sql);
 
