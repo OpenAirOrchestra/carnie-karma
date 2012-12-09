@@ -214,6 +214,7 @@ sss for that user.
 		     (wp_verify_nonce($karma_list_nonce, 'karma_list_nonce')) ) {
 			$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
 			$gig_karma_view_name = $wpdb->prefix . "gig_karma";
+			$karma_load_view_name = $wpdb->prefix . "karmic_load";
 
 			// Get summary data For workshops
 			$sql = $wpdb->prepare(
@@ -237,12 +238,22 @@ sss for that user.
 				);
 			$gig_row = $wpdb->get_row($sql, ARRAY_A);
 
-			// Get summary data for Verified gig attendance
+			// Get summary data For karmic load
+			$sql = $wpdb->prepare(
+				"
+				SELECT COUNT(  id ) AS events , SUM(  karma ) AS karmic_load
+				  FROM  $karma_load_view_name
+				  WHERE  userid = %d
+				",
+				$user_id
+				);
+			$load_row = $wpdb->get_row($sql, ARRAY_A);
 
 			$userView = new carnieKarmaUserView;
 			$userView->render($user_id, 
 				$workshop_row['workshops'], $workshop_row['workshop_karma'],
-				$gig_row['gigs'], $gig_row['gig_karma']
+				$gig_row['gigs'], $gig_row['gig_karma'],
+				$load_row['events'], $load_row['karmic_load']
 			);
 		} else {
 			echo "<h2>Security error: nonce</h2>";

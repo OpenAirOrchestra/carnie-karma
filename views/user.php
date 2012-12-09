@@ -60,9 +60,23 @@ class carnieKarmaUserView {
  	 * Renders a summary of users' tour karma burned
 	 * with link to detailed table
 	 */
-	function render_tour_summary($user_id) {
-		print "<h3>Tour Karmic Load</h3>";
-		print "<p>Not Done Yet</p>";
+	function render_tour_summary($user_id, $tours, $karmic_load, $karma_detail_nonce) {
+?>
+		<h3>Tour Karmic Load</h3>
+
+		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+			<input type="hidden" name="karma_detail" value="load" />
+			<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
+			<input type="hidden" name="karma_detail_nonce" value="<?php echo $karma_detail_nonce; ?>" />
+			<p>
+				Tours: <?php echo ($tours ? $tours : 0); ?>
+				<br/>
+				Karmic Load: <?php echo ($karmic_load ? $karmic_load : 0); ?>
+				<br/>
+                		<input type="submit" value="Details" />
+			</p>
+		</form>
+<?php
 	}
 
 	/*
@@ -71,14 +85,14 @@ class carnieKarmaUserView {
 	function render_balance($user_id) {
 		print "<h3>Karmic Balance</h3>";
 		print "<p>Not Done Yet</p>";
-		print "<p>To calculate Karmic Balance, expect some math like <br/>500 * workshop karma + 1000 * gig karma - tour karmic load</p>";
+		print "<p>To calculate Karmic Balance, expect some math like <br/>500 * workshop karma + 1000 * gig karma - 1000 * tour karmic load</p>";
 	}
 
 	/*
  	 * Renders a summary karma report for single user.
 	 * with links to detailed tables
 	 */
-	function render($user_id, $workshops, $workshop_karma, $gigs, $gig_karma) {
+	function render($user_id, $workshops, $workshop_karma, $gigs, $gig_karma, $tours, $karmic_load) {
                 $user_info = get_userdata($user_id);
 
                 $siteurl = get_bloginfo('siteurl');
@@ -109,7 +123,7 @@ class carnieKarmaUserView {
 		$this->render_gig_summary($user_id, $gigs, $gig_karma, $karma_detail_nonce);
 
 		// Tour karma burned
-		$this->render_tour_summary($user_id);
+		$this->render_tour_summary($user_id, $tours, $karmic_load, $karma_detail_nonce);
 
 		// Karmic Balance
 		$this->render_balance($user_id);
