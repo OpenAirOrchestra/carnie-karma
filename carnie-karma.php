@@ -140,9 +140,9 @@ class carnieKarma {
 
 			$wpdb->query($sql);
 
-			// Create tables for Karmic Load and Karmic Load Metadata
-			$table_name = $wpdb->prefix . "karmic_load";
-                        $sql = "CREATE TABLE $table_name (
+			// Create tables for Karmic Load Ledger and Karmic Load Metadata
+                        $karma_load_table_name = $wpdb->prefix . "karmic_load_ledger";
+                        $sql = "CREATE TABLE $karma_load_table_name (
                                 id bigint(20) NOT NULL AUTO_INCREMENT,
                                 user_id bigint(20) ,
                         	date date DEFAULT '0000-00-00' NOT NULL,
@@ -153,13 +153,35 @@ class carnieKarma {
 
 			$wpdb->query($sql);
 
-			$table_name = $wpdb->prefix . "karmic_loadmeta";
-                        $sql = "CREATE TABLE $table_name (
+			$karma_load_meta_table_name = $wpdb->prefix . "karmic_loadmeta";
+                        $sql = "CREATE TABLE $karma_load_meta_table_name (
                                 meta_id bigint(20) NOT NULL AUTO_INCREMENT,
                                 load_id bigint(20) ,
                                 meta_key text NOT NULL,
                                 meta_value text,
                                 UNIQUE KEY meta_id (meta_id) );";
+
+			$wpdb->query($sql);
+
+			$table_name = $wpdb->prefix . "karmic_load";
+
+			// Create view for calculated karmic load
+			$karma_load_view_name = $wpdb->prefix . "karmic_load";
+			$sql = "
+				CREATE VIEW 
+					$karma_load_view_name
+				AS
+				SELECT 
+					$karma_load_table_name.id AS id,
+					$karma_load_table_name.notes AS notes,
+					$karma_load_table_name.user_id AS userid,
+					$karma_load_table_name.date AS date,
+					( $karma_load_table_name.initial_load * POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , $karma_load_table_name.date ) ) ) ) AS karma 
+				FROM 
+					$karma_load_table_name
+				WHERE 
+					$karma_load_table_name.deleted IS NULL OR  $karma_load_table_name.deleted = 0 
+			";
 
 			$wpdb->query($sql);
 
