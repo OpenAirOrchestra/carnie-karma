@@ -33,9 +33,11 @@ require_once $include_folder . '/views/users.php';
 require_once $include_folder . '/views/user.php';
 require_once $include_folder . '/views/workshops.php';
 require_once $include_folder . '/views/gigs.php';
+require_once $include_folder . '/views/load_details.php';
 require_once $include_folder . '/views/tables.php';
 require_once $include_folder . '/controllers/workshops.php';
 require_once $include_folder . '/controllers/gigs.php';
+require_once $include_folder . '/controllers/load.php';
 require_once $include_folder . '/version.php';
 
 /*
@@ -282,7 +284,8 @@ sss for that user.
 	 * Do a detailed report of karmic load for a user
 	 */
 	function load_detail($user_id) {
-		echo "<h2>TODO: Karmic Load  For User " . $user_id . "</h2>";
+		$loadController = new carnieKarmaLoadController;
+		$loadController->report($user_id);
 	}
 
 	/*
