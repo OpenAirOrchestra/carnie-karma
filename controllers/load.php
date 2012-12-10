@@ -39,13 +39,15 @@ class carnieKarmaLoadController {
 
 		$sql = $wpdb->prepare(
 			"
-			SELECT id, notes, userid, date, initial_load,
+			SELECT id, notes, userid, date, 
+			  ( %d * initial_load) AS initial_load,
 			  ( %d * karma) AS karma
 			  FROM  $karmic_load_view_name
 			  WHERE  userid = %d
 			  ORDER BY date DESC
 			  LIMIT %d, %d
 			",
+			CARNIE_KARMA_LOAD_MULTIPLIER,
 			CARNIE_KARMA_LOAD_MULTIPLIER,
 			$user_id, $offset, $limit
 			);

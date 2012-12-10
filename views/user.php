@@ -82,10 +82,13 @@ class carnieKarmaUserView {
 	/*
  	 * Renders Karmic balance
 	 */
-	function render_balance($user_id) {
-		print "<h3>Karmic Balance</h3>";
-		print "<p>Not Done Yet</p>";
-		print "<p>To calculate Karmic Balance, expect some math like <br/>500 * workshop karma + 1000 * gig karma - 1000 * tour karmic load</p>";
+	function render_balance($user_id, $workshop_karma, $gig_karma, $karmic_load) {
+?>
+		<h3>Karmic Balance</h3>
+		<br/>
+			Karmic Balance: <?php print $workshop_karma + $gig_karma - $karmic_load; ?>
+		</p>
+<?php
 	}
 
 	/*
@@ -126,7 +129,7 @@ class carnieKarmaUserView {
 		$this->render_tour_summary($user_id, $tours, $karmic_load, $karma_detail_nonce);
 
 		// Karmic Balance
-		$this->render_balance($user_id);
+		$this->render_balance($user_id, $workshop_karma, $gig_karma, $karmic_load);
 	}
 }
 ?>

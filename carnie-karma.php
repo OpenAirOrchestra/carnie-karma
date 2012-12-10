@@ -372,6 +372,11 @@ sss for that user.
 	</p>
 
 	<p>
+	Karmic balance is the sum of gig and workshop karma, less karmic load.  <br/>
+	Gig Karma + Workshop Karma - Karmic Load = Karmic Balance
+	</p>
+
+	<p>
 	Karma and karmic load evaporate gradually, 
 	with a half life of about a year.  
 	That means that all karma values diminish to about
