@@ -13,6 +13,7 @@ class carnieKarmaLoadDetailsView {
                 <tr>
 			<th>Date</th>
 			<th>Title</th>
+			<th>Initial Load</th>
 			<th>Karma</th>
                 </tr>
 <?php
@@ -73,6 +74,7 @@ class carnieKarmaLoadDetailsView {
 			echo "<td>";
 			echo $detail['notes'];
 			echo "</td>";
+			echo "<td>" .  $detail['initial_load'] . " </td>";
 			echo "<td>" .  $detail['karma'] . " </td>";
 			print "</tr>";
 		}

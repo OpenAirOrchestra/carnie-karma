@@ -29,6 +29,7 @@ $include_folder = dirname(__FILE__);
 
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
+require_once $include_folder . '/model/multipliers.php';
 require_once $include_folder . '/views/users.php';
 require_once $include_folder . '/views/user.php';
 require_once $include_folder . '/views/workshops.php';
@@ -178,6 +179,7 @@ class carnieKarma {
 					$karma_load_table_name.notes AS notes,
 					$karma_load_table_name.user_id AS userid,
 					$karma_load_table_name.date AS date,
+					$karma_load_table_name.initial_load AS initial_load,
 					( $karma_load_table_name.initial_load * POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , $karma_load_table_name.date ) ) ) ) AS karma 
 				FROM 
 					$karma_load_table_name
@@ -221,21 +223,24 @@ sss for that user.
 			// Get summary data For workshops
 			$sql = $wpdb->prepare(
 				"
-				SELECT COUNT(  workshop_id ) AS workshops , SUM(  karma ) AS workshop_karma
+				SELECT COUNT(  workshop_id ) AS workshops , ( %d * SUM(  karma ) ) AS workshop_karma
 				  FROM  $workshop_karma_view_name
 				  WHERE  user_id = %d
 				",
+				CARNIE_KARMA_WORKSHOP_MULTIPLIER,
 				$user_id
 				);
+
 			$workshop_row = $wpdb->get_row($sql, ARRAY_A);
 
 			// Get summary data For gigs
 			$sql = $wpdb->prepare(
 				"
-				SELECT COUNT(  gigid ) AS gigs , SUM(  karma ) AS gig_karma
+				SELECT COUNT(  gigid ) AS gigs , (%d * SUM(  karma )) AS gig_karma
 				  FROM  $gig_karma_view_name
 				  WHERE  userid = %d
 				",
+				CARNIE_KARMA_GIG_MULTIPLIER,
 				$user_id
 				);
 			$gig_row = $wpdb->get_row($sql, ARRAY_A);
@@ -243,10 +248,11 @@ sss for that user.
 			// Get summary data For karmic load
 			$sql = $wpdb->prepare(
 				"
-				SELECT COUNT(  id ) AS events , SUM(  karma ) AS karmic_load
+				SELECT COUNT(  id ) AS events , (%d * SUM(  karma )) AS karmic_load
 				  FROM  $karma_load_view_name
 				  WHERE  userid = %d
 				",
+				CARNIE_KARMA_LOAD_MULTIPLIER,
 				$user_id
 				);
 			$load_row = $wpdb->get_row($sql, ARRAY_A);
@@ -355,6 +361,8 @@ sss for that user.
 	get more karma.  It evaporates (sublimes?)
 	over time, so what you have done lately matters more than
 	what you have done in the distant past. 
+	</p>
+	<p>
 	Karma from gigs and karma from workshops is wieghted differently.
 	</p>
 	<p>
@@ -383,6 +391,10 @@ sss for that user.
 	<img src="<?php echo get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/images/decay.jpg'; ?>"/>
 	</a>
 	
+	<p>
+	Participation Karma has no monetary value.  The amount of karmic load
+	incurred for a particlar amount funding is different for every tour.
+	</p>
 
 <?php
 	}

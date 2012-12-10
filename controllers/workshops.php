@@ -39,12 +39,14 @@ class carnieKarmaWorkshopsController {
 
 		$sql = $wpdb->prepare(
 			"
-			SELECT *
+			SELECT workshop_id, title, date, user_id,
+			  ( %d * karma ) AS karma
 			  FROM  $workshop_karma_view_name
 			  WHERE  user_id = %d
 			  ORDER BY date DESC
 			  LIMIT %d, %d
 			",
+			CARNIE_KARMA_WORKSHOP_MULTIPLIER,
 			$user_id, $offset, $limit
 			);
 

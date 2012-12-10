@@ -39,12 +39,14 @@ class carnieKarmaGigsController {
 
 		$sql = $wpdb->prepare(
 			"
-			SELECT *
+			SELECT gigid, title, userid, date,
+				(karma * %d) AS karma 
 			  FROM  $gig_karma_view_name
 			  WHERE  userid = %d
 			  ORDER BY date DESC
 			  LIMIT %d, %d
 			",
+			CARNIE_KARMA_GIG_MULTIPLIER,
 			$user_id, $offset, $limit
 			);
 
