@@ -404,12 +404,37 @@ sss for that user.
 <?php
 	}
 
+	/*
+         * Create admin menu(s) for this plugin.
+         */
+        function create_admin_menu() {
+
+                // Add object page
+                add_object_page( 'Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url( 'images/karma16.png' , __FILE__ ));
+
+	}
+
+        /*
+         * Create tools page that lists karmic load.
+	 * This is the karmic load ledger.
+         */
+        function list_karmic_load() {
+
+?>
+        <div class="wrap">
+                <div id="icon-edit" class="icon32"><br/></div>
+                <h2>Karmic Load Ledger</h2>
+<?php
+	}
+
+ 
+
 };
 
 // instantiate class
 $CARNIEKARMA = new carnieKarma;
 
-// add_action('admin_menu', array($CARNIEKARMA, 'create_admin_menu'));
+add_action('admin_menu', array($CARNIEKARMA, 'create_admin_menu'));
 
 // activation hook
 register_activation_hook(__FILE__, array($CARNIEKARMA, 'activate'));
