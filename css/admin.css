@@ -14,3 +14,7 @@ tr.deleted td.column-user-id {
 tr.deleted td.column-inital-load {
 	text-decoration: line-through;
 }
+
+td.column-history {
+	font-size: smaller;
+}

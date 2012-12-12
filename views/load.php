@@ -129,6 +129,26 @@ class carnieKarmaLoadView {
 
         }
 
+	/*
+	 * Render history
+	 */
+	function render_history($history) {
+		foreach ($history as $meta) {
+
+			if (strcasecmp($meta['meta_key'], 'deleted_by') == 0) {
+				// Deleted by, let's get a user nicename from
+				// user id
+				echo str_replace( '_', ' ', $meta['meta_key']) . ": ";
+				$user_id = $meta['meta_value'];
+				$user_info = get_userdata($user_id);
+				echo $user_info->user_login;
+			} else {
+				echo str_replace( '_', ' ', $meta['meta_key']) . ": ";
+				echo $meta['meta_value'] . "<br/>";
+			}
+		}
+	}
+
         /*
          * render a row in karmic load table
          */
@@ -194,10 +214,8 @@ class carnieKarmaLoadView {
 			<td><?php if ($row['deleted']) { echo "Deleted"; } ?></td>
 			<td class="history column-history">
 <?php
-				foreach ($history as $meta) {
-					echo $meta['meta_key'] . ": ";
-					echo $meta['meta_value'] . "<br/>";
-				}
+				$this->render_history($history);
+
 ?>
 			</td>
 		</tr>
