@@ -35,6 +35,7 @@ require_once $include_folder . '/views/user.php';
 require_once $include_folder . '/views/workshops.php';
 require_once $include_folder . '/views/gigs.php';
 require_once $include_folder . '/views/load_details.php';
+require_once $include_folder . '/views/load.php';
 require_once $include_folder . '/views/tables.php';
 require_once $include_folder . '/controllers/workshops.php';
 require_once $include_folder . '/controllers/gigs.php';
@@ -405,6 +406,25 @@ sss for that user.
 	}
 
 	/*
+         * Process karma load ledger post
+         */
+        function process_ledger_post() {
+
+		/***********************************
+
+                if (current_user_can('add_users')) {
+                        $nonce = $_REQUEST['karma_ledger_nonce'];
+                        if ($nonce && wp_verify_nonce($nonce, 'karma_ledger_nonce')) {
+                                // Process post
+                                $loadController = new carnieKarmaLoadController;
+                                $loadController->process_post();
+                        }
+                }
+
+		************************************/
+        }
+
+	/*
          * Create admin menu(s) for this plugin.
          */
         function create_admin_menu() {
@@ -425,6 +445,59 @@ sss for that user.
                 <div id="icon-edit" class="icon32"><br/></div>
                 <h2>Karmic Load Ledger</h2>
 <?php
+
+		$this->process_ledger_post();
+
+		 global $wpdb;
+
+		/***********
+                 if ( strcasecmp($_REQUEST["action"], 'delete') == 0) {
+                        $delete_nonce = $_REQUEST["karma_ledger_delete_nonce"];
+                        $id = $_GET["id"];
+                        if ($row_id && $delete_nonce &&
+                                wp_verify_nonce($delete_nonce, "karma_ledger_delete_nonce")) {
+
+                                $this->delete_ledger_row($id);
+
+                        }
+                 }
+		**********/
+
+		// orderby=date&order=desc
+
+                $orderBy = 'id';
+                $order = 'DESC';
+                if ( strcasecmp($_REQUEST["orderby"], 'title') == 0 ||
+                        strcasecmp($_REQUEST["orderby"], 'date') == 0) {
+                        $orderBy = strtolower($_REQUEST["orderby"]);
+                }
+                if ( strcasecmp($_REQUEST["order"], 'asc') == 0) {
+                        $order = "ASC";
+                }
+
+                $paged = 1;
+                if ($_REQUEST["paged"]) {
+                        $paged = intval($_REQUEST['paged']);
+                        if ($paged < 1) {
+                                $paged = 1;
+                        }
+                }
+               
+		$limit = 31;
+                $offset = $limit * ($paged - 1);
+
+		$table_name = $wpdb->prefix . "karmic_load_ledger";
+
+ 		$all_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name;" ) );
+                $filtered_count = $all_count;
+
+                $sql = $wpdb->prepare("SELECT * FROM `$table_name` ORDER BY `$table_name`.`$orderBy` $order LIMIT $offset, $limit");
+
+		$rows = $wpdb->get_results( $sql, ARRAY_A );
+
+		$loadView = new carnieKarmaLoadView;
+		$loadView->render_table( $rows, $orderBy, $order, $all_count, $filtered_count, $limit, $paged );
+
 	}
 
  
