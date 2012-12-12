@@ -123,6 +123,7 @@ class carnieKarmaLoadView {
                         $this->render_th('initial_load', 'Inital Karmic Load', $orderBy, $order);
                         $this->render_th('deleted', 'Deleted', $orderBy, $order);
 ?>
+			<th>History</th>
                 </tr>
 <?php
 
@@ -191,6 +192,11 @@ class carnieKarmaLoadView {
 			</td>
 			<td class="inital_load column-inital-load"><?php echo $row["initial_load"]; ?></td>
 			<td><?php if ($row['deleted']) { echo "Deleted"; } ?></td>
+			<td class="history column-history">
+<?php
+				// TODO history goes here.
+?>
+			</td>
 		</tr>
 <?php
 	}
