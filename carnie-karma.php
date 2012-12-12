@@ -462,7 +462,48 @@ sss for that user.
 		$row = $wpdb->get_row($sql, ARRAY_A);
 
 		if ($row && !$row['deleted']) {
-			echo "DELETE ROW ";
+
+
+			// Delete the Row by setting 'deleted' to 1
+			$wpdb->update( $table_name,
+				array('deleted' => 1),
+				array('id' => $row_id),
+				array('%d'),
+				array('%d')
+			);
+				
+
+			// Add delete metadata
+			$meta_table_name = $wpdb->prefix . "karmic_loadmeta";
+
+			$wpdb->insert(
+				$meta_table_name,
+				array(
+					'load_id'=>$row_id,
+					'meta_key'=>'delete_date',
+					'meta_value'=>date("Y-m-d")
+				),
+				array(	
+					'%d',
+					'%s',
+					'%s'
+				)
+			);
+			$current_user = wp_get_current_user();
+			$wpdb->insert(
+				$meta_table_name,
+				array(
+					'load_id'=>$row_id,
+					'meta_key'=>'deleted_by',
+					'meta_value'=>$current_user->ID
+				),
+				array(	
+					'%d',
+					'%s',
+					'%s'
+				)
+			);
+
 		}
 	}
 	 
