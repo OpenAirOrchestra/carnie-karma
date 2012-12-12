@@ -24,9 +24,15 @@ class carnieKarmaLoadView {
          * render a row in workshop table
          */
         function render_row( $row, $karma_ledger_delete_nonce, $karma_ledger_nonce ) {
-		// TODO
 ?>
-		<tr><td>ROW</td></tr>
+		<tr>
+			<td><?php echo $row["id"]; ?></td>
+			<td><?php echo $row["date"]; ?></td>
+			<td><?php echo $row["notes"]; ?></td>
+			<td><?php echo $row["user_id"]; ?></td>
+			<td><?php echo $row["initial_load"]; ?></td>
+			<td><?php if ($row['deleted']) { echo "Deleted"; } ?></td>
+		</tr>
 <?php
 	}
 
