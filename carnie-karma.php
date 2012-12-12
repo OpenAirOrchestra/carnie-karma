@@ -430,10 +430,21 @@ sss for that user.
         function create_admin_menu() {
 
                 // Add object page
-                add_object_page( 'Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url( 'images/karma16.png' , __FILE__ ));
-
+                $page = add_object_page( 'Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url( 'images/karma16.png' , __FILE__ ));
 	}
 
+	   
+	/*
+ 	 * Enqueue admin stylesheet	
+         */
+	function admin_styles($hook) {
+		if ('toplevel_page_list-karmic-load' != $hook) 
+			return;
+
+	       wp_register_style( 'carnieKarmaAdminStylesheet', plugins_url('css/admin.css', __FILE__) );
+	       wp_enqueue_style( 'carnieKarmaAdminStylesheet' );
+	}
+	 
         /*
          * Create tools page that lists karmic load.
 	 * This is the karmic load ledger.
@@ -500,14 +511,15 @@ sss for that user.
 
 	}
 
- 
 
 };
 
 // instantiate class
 $CARNIEKARMA = new carnieKarma;
 
+// action hooks
 add_action('admin_menu', array($CARNIEKARMA, 'create_admin_menu'));
+add_action( 'admin_enqueue_scripts', array($CARNIEKARMA, 'admin_styles'));
 
 // activation hook
 register_activation_hook(__FILE__, array($CARNIEKARMA, 'activate'));

@@ -1,0 +1,16 @@
+
+tr.deleted td.column-title {
+	text-decoration: line-through;
+}
+
+tr.deleted td.column-date {
+	text-decoration: line-through;
+}
+
+tr.deleted td.column-user-id {
+	text-decoration: line-through;
+}
+
+tr.deleted td.column-inital-load {
+	text-decoration: line-through;
+}

@@ -140,9 +140,18 @@ class carnieKarmaLoadView {
 		$rowid = $row["id"];
                 $delete_url = get_admin_url() . "admin.php?page=list-karmic-load&row=$row_id&action=delete&karma_ledger_delete_nonce=$karma_ledger_delete_nonce";
 
+		if ($row['deleted']) {
 ?>
-		<tr>
-			<td>
+			<tr class="deleted">
+<?php 
+		} else {
+?>
+			<tr>
+<?php 
+		}
+
+?>
+			<td class="id column-id">
 <?php 
 		echo $row["id"]; 
 		if (current_user_can('edit_users') && !($row['deleted'])) {
@@ -162,8 +171,8 @@ class carnieKarmaLoadView {
 				<?php echo $row["notes"]; ?>
 				</strong>
 			</td>
-			<td><?php echo $row["date"]; ?></td>
-			<td>
+			<td class="date column-date"><?php echo $row["date"]; ?></td>
+			<td class="user_id column-user-id">
 <?php
 		if ($user_info->first_name || $user_info->last_name) {
 			echo $user_info->first_name . ' ' . $user_info->last_name;
@@ -180,7 +189,7 @@ class carnieKarmaLoadView {
 		}
 ?>
 			</td>
-			<td><?php echo $row["initial_load"]; ?></td>
+			<td class="inital_load column-inital-load"><?php echo $row["initial_load"]; ?></td>
 			<td><?php if ($row['deleted']) { echo "Deleted"; } ?></td>
 		</tr>
 <?php
