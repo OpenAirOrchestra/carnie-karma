@@ -444,6 +444,27 @@ sss for that user.
 	       wp_register_style( 'carnieKarmaAdminStylesheet', plugins_url('css/admin.css', __FILE__) );
 	       wp_enqueue_style( 'carnieKarmaAdminStylesheet' );
 	}
+
+	/*
+	 * Delete a row in the karma load table
+	 */
+	function delete_ledger_row($row_id) {
+
+		global $wpdb;
+		$table_name = $wpdb->prefix . "karmic_load_ledger";
+
+                $sql = $wpdb->prepare("
+			SELECT *
+			FROM `$table_name` 
+			WHERE id = %d 
+			", $row_id);
+
+		$row = $wpdb->get_row($sql, ARRAY_A);
+
+		if ($row && !$row['deleted']) {
+			echo "DELETE ROW ";
+		}
+	}
 	 
         /*
          * Create tools page that lists karmic load.
@@ -461,18 +482,17 @@ sss for that user.
 
 		 global $wpdb;
 
-		/***********
                  if ( strcasecmp($_REQUEST["action"], 'delete') == 0) {
-                        $delete_nonce = $_REQUEST["karma_ledger_delete_nonce"];
-                        $id = $_GET["id"];
-                        if ($row_id && $delete_nonce &&
-                                wp_verify_nonce($delete_nonce, "karma_ledger_delete_nonce")) {
 
+
+                        $delete_nonce = $_REQUEST["karma_ledger_delete_nonce"];
+                        $id = $_GET["row"];
+                        if ($id && $delete_nonce &&
+                                wp_verify_nonce($delete_nonce, "karma_ledger_delete_nonce")) {
                                 $this->delete_ledger_row($id);
 
                         }
                  }
-		**********/
 
 		// orderby=date&order=desc
 
