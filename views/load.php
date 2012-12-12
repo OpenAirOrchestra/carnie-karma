@@ -132,7 +132,7 @@ class carnieKarmaLoadView {
         /*
          * render a row in karmic load table
          */
-        function render_row( $row, $karma_ledger_delete_nonce, $karma_ledger_nonce ) {
+        function render_row( $row, $history, $karma_ledger_delete_nonce, $karma_ledger_nonce ) {
 		$user_id = $row["user_id"];
 		$user_info = get_userdata($user_id);
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
@@ -194,7 +194,10 @@ class carnieKarmaLoadView {
 			<td><?php if ($row['deleted']) { echo "Deleted"; } ?></td>
 			<td class="history column-history">
 <?php
-				// TODO history goes here.
+				foreach ($history as $meta) {
+					echo $meta['meta_key'] . ": ";
+					echo $meta['meta_value'] . "<br/>";
+				}
 ?>
 			</td>
 		</tr>
@@ -212,7 +215,19 @@ class carnieKarmaLoadView {
 
                 foreach ($rows as $row)
                 {
-                        $this->render_row($row, $karma_ledger_delete_nonce, $karma_ledger_nonce);
+
+			// Bad boy!  This code should not be in the view.
+			global $wpdb;
+			$meta_table_name = $wpdb->prefix . "karmic_loadmeta";
+			$sql = $sql = $wpdb->prepare(
+                                "
+                                SELECT *
+				FROM $meta_table_name
+				WHERE load_id = %d
+				", $row['id']);
+			$history = $wpdb->get_results( $sql, ARRAY_A );
+
+                        $this->render_row($row, $history, $karma_ledger_delete_nonce, $karma_ledger_nonce);
                 }
                 echo '          </tbody>';
         }
