@@ -502,7 +502,16 @@ sss for that user.
  		$all_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name;" ) );
                 $filtered_count = $all_count;
 
-                $sql = $wpdb->prepare("SELECT * FROM `$table_name` ORDER BY `$table_name`.`$orderBy` $order LIMIT $offset, $limit");
+                $sql = $wpdb->prepare("
+			SELECT id, notes, date, user_id, deleted,
+				(%d * initial_load) AS initial_load
+			FROM `$table_name` 
+			ORDER BY `$table_name`.`$orderBy` $order 
+			LIMIT %d, %d 
+			",
+				CARNIE_KARMA_LOAD_MULTIPLIER,
+				$offset,
+				$limit);
 
 		$rows = $wpdb->get_results( $sql, ARRAY_A );
 
