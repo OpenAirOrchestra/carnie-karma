@@ -117,8 +117,8 @@ class carnieKarmaLoadView {
                 <tr>
 <?php
                         $this->render_th('id', 'Row', $orderBy, $order);
+                        $this->render_th('notes', 'Tour', $orderBy, $order);
                         $this->render_th('date', 'Date', $orderBy, $order);
-                        $this->render_th('notes', 'Notes', $orderBy, $order);
                         $this->render_th('user_id', 'User', $orderBy, $order);
                         $this->render_th('initial_load', 'Inital Karmic Load', $orderBy, $order);
                         $this->render_th('deleted', 'Deleted', $orderBy, $order);
@@ -129,7 +129,7 @@ class carnieKarmaLoadView {
         }
 
         /*
-         * render a row in workshop table
+         * render a row in karmic load table
          */
         function render_row( $row, $karma_ledger_delete_nonce, $karma_ledger_nonce ) {
 		$user_id = $row["user_id"];
@@ -137,11 +137,32 @@ class carnieKarmaLoadView {
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
                 $user_info = get_userdata($user_id);
 
+		$rowid = $row["id"];
+                $delete_url = get_admin_url() . "admin.php?page=list-karmic-load&row=$row_id&action=delete&karma_ledger_delete_nonce=$karma_ledger_delete_nonce";
+
 ?>
 		<tr>
-			<td><?php echo $row["id"]; ?></td>
+			<td>
+<?php 
+		echo $row["id"]; 
+		if (current_user_can('edit_users') && !($row['deleted'])) {
+?>
+                                <div class="row-actions">
+                                        <span class="trash">
+<a href="<?php echo $delete_url; ?>" title="Delete this row">Delete Row</a> </span>
+                                </div>
+
+<?php
+		}
+?>
+
+			</td>
+			<td class="post-title page-title column-title">
+				<strong>
+				<?php echo $row["notes"]; ?>
+				</strong>
+			</td>
 			<td><?php echo $row["date"]; ?></td>
-			<td><?php echo $row["notes"]; ?></td>
 			<td>
 <?php
 		if ($user_info->first_name || $user_info->last_name) {
