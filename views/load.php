@@ -75,10 +75,57 @@ class carnieKarmaLoadView {
 
  
         /*
+         * render th
+         */
+        function render_th($column, $title, $orderBy, $order) {
+                $newOrder = $order;
+                if ( strcasecmp($order, 'desc') == 0) {
+                        $newOrder = 'asc';
+                } else {
+                        $newOrder = 'desc';
+                }
+                echo '<th class="manage-column column-';
+                echo $column;
+                if (strcmp($column, $orderBy) == 0) {
+                        echo ' sorted ';
+                } else {
+                        echo ' sortable ';
+                }
+                if (strcmp($order, "DESC") == 0) {
+                        echo ' desc ';
+                } else {
+                        echo ' asc ';
+                }
+                echo '" scope="col">';
+?>
+                <a href="<?php
+                        echo $this->current_request_with_params(
+                                array('orderby' => $column, 'order' => $newOrder ) );
+?>">
+                        <span><?php echo $title; ?></span><span class="sorting-indicator"></span>
+                </a>
+<?php
+                echo "</th>";
+
+        }
+
+        /*
          * render table header/footer
          */
         function render_table_header_footer($orderBy, $order) {
-		// TODO
+?>
+                <tr>
+<?php
+                        $this->render_th('id', 'Row', $orderBy, $order);
+                        $this->render_th('date', 'Date', $orderBy, $order);
+                        $this->render_th('notes', 'Notes', $orderBy, $order);
+                        $this->render_th('user_id', 'User', $orderBy, $order);
+                        $this->render_th('initial_load', 'Inital Karmic Load', $orderBy, $order);
+                        $this->render_th('deleted', 'Deleted', $orderBy, $order);
+?>
+                </tr>
+<?php
+
         }
 
         /*
