@@ -301,7 +301,8 @@ class carnieKarmaLoadView {
 					<label for="notes">Notes</label>
 				</th>
 				<td>
-				<input type="textarea" name="notes"/>
+				<input type="textarea" name="notes" id="notes" class="regular-text"/>
+				<p class="description">Put the name of the tour or other event here.</p>
 				</td>
 				<td>
 				<span><?php echo $post_errors['notes']; ?></span>
@@ -312,7 +313,8 @@ class carnieKarmaLoadView {
 					<label for="date">Date</label>
 				</th>
 				<td>
-				<input type="text" name="date"/>
+				<input type="text" name="date" id="date" class="regular-text"/>
+				<p class="description">The date the karmic load is incurred e.g., <?php echo date("Y-m-d"); ?>. Note that the date must be in the present or past, it may not be in the future.</p>
 				</td>
 				<td>
 				<span><?php echo $post_errors['date']; ?></span>
@@ -334,6 +336,7 @@ class carnieKarmaLoadView {
 			}
 ?>
 				</select>
+				<p class="description"> </p>
 				</td>
 				<td>
 				<span><?php echo $post_errors['user_id']; ?></span>
@@ -345,7 +348,8 @@ class carnieKarmaLoadView {
 					<label for="initial_load">Inital Karmic Load</label>
 				</th>
 				<td>
-				<input type="text" name="initial_load"/>
+				<input type="number" name="initial_load" id="initial_load" />
+				<p class="description">The initial value of the karmic load.</p>
 				</td>
 				<td>
 				<span><?php echo $post_errors['initial_load']; ?></span>
