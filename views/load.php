@@ -301,7 +301,7 @@ class carnieKarmaLoadView {
 					<label for="notes">Notes</label>
 				</th>
 				<td>
-				<input type="textarea" name="notes" id="notes" class="regular-text"/>
+				<textarea name="notes" id="notes" cols="40"></textarea>
 				<p class="description">Put the name of the tour or other event here.</p>
 				</td>
 				<td>
