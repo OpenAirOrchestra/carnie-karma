@@ -299,7 +299,7 @@ class carnieKarmaLoadView {
 <?php
 			foreach($users as $user) {
 				if ($user->user_login != 'admin') {
-					echo '<option value=\"' . $user->ID . '\">' ; 
+					echo '<option value="' . $user->ID . '">' ; 
 					echo $user->display_name . " (" . $user->user_nicename . ")" ;
 					echo '</option>';
 				}
