@@ -284,6 +284,7 @@ class carnieKarmaLoadView {
 	function render_add_form($post_errors) {
                 $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
                 $users = get_users('orderby=nicename');
+		
 ?>  
 	      
 		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
@@ -301,7 +302,7 @@ class carnieKarmaLoadView {
 					<label for="notes">Notes</label>
 				</th>
 				<td>
-				<textarea name="notes" id="notes" cols="40"></textarea>
+				<textarea name="notes" id="notes" cols="40"><?php if (count($post_errors)) { echo $_POST['notes']; } ?></textarea>
 				<p class="description">Put the name of the tour or other event here.</p>
 				</td>
 				<td>
@@ -313,7 +314,7 @@ class carnieKarmaLoadView {
 					<label for="date">Date</label>
 				</th>
 				<td>
-				<input type="text" name="date" id="date" class="regular-text"/>
+				<input type="text" name="date" id="date" class="regular-text" value="<?php if (count($post_errors)) { echo $_POST['date']; } ?>" />
 				<p class="description">The date the karmic load is incurred e.g., <?php echo date("Y-m-d"); ?>. Note that the date must be in the present or past, it may not be in the future.</p>
 				</td>
 				<td>
@@ -348,7 +349,7 @@ class carnieKarmaLoadView {
 					<label for="initial_load">Inital Karmic Load</label>
 				</th>
 				<td>
-				<input type="number" name="initial_load" id="initial_load" />
+				<input type="number" name="initial_load" id="initial_load" value = "<?php if (count($post_errors)) { echo $_POST['initial_load']; } ?>" />
 				<p class="description">The initial value of the karmic load.</p>
 				</td>
 				<td>
