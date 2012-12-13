@@ -18,7 +18,12 @@ class carnieKarmaLoadController {
 
 			$time = strtotime($_POST['date']);
 			if ($time) {
-				$date = date("Y-m-d", $time);
+
+				if ($time > time()) {
+					$post_errors['date'] = "Date must not be in the future.";
+				} else {
+					$date = date("Y-m-d", $time);
+				}
 			} else {
 				$post_errors['date'] = "Invalid date";
 			}
