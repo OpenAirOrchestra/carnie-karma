@@ -285,18 +285,44 @@ class carnieKarmaLoadView {
                 $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
                 $users = get_users('orderby=nicename');
 ?>  
-		      <h3> Add Row </h3>
-			<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
-				<input type="hidden" name="karma_ledger_nonce" value="<?php echo $karma_ledger_nonce; ?>" />
-				<input type="hidden" name="action" value="add" />
-				Notes:
+	      
+		<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+			<input type="hidden" name="karma_ledger_nonce" value="<?php echo $karma_ledger_nonce; ?>" />
+			<input type="hidden" name="action" value="add" />
+			
+			<h3> Add Row </h3>
+			<p>
+			To add a row to the karmic load ledger use the form below.
+			</p>
+			<table class="form-table">
+			  <tbody>
+			    <tr valign="top">
+				<th scope="row">
+					<label for="notes">Notes</label>
+				</th>
+				<td>
 				<input type="textarea" name="notes"/>
-				<span><?php echo $post_errors['notes']; ?></span><br/>
-				Date:
+				</td>
+				<td>
+				<span><?php echo $post_errors['notes']; ?></span>
+				</td>
+			    </tr>
+			    <tr valign="top">
+				<th scope="row">
+					<label for="date">Date</label>
+				</th>
+				<td>
 				<input type="text" name="date"/>
-				<span><?php echo $post_errors['date']; ?></span><br/>
-
-				User:
+				</td>
+				<td>
+				<span><?php echo $post_errors['date']; ?></span>
+				</td>
+			    </tr>
+			    <tr valign="top">
+				<th scope="row">
+					<label for="user_id">User</label>
+				</th>
+				<td>
 				<select name="user_id">
 <?php
 			foreach($users as $user) {
@@ -308,16 +334,30 @@ class carnieKarmaLoadView {
 			}
 ?>
 				</select>
-				<span><?php echo $post_errors['user_id']; ?></span><br/>
+				</td>
+				<td>
+				<span><?php echo $post_errors['user_id']; ?></span>
+				</td>
 
-				Initial Karmic Load:
+			    </tr>
+			    <tr valign="top">
+				<th scope="row">
+					<label for="initial_load">Inital Karmic Load</label>
+				</th>
+				<td>
 				<input type="text" name="initial_load"/>
-				<span><?php echo $post_errors['initial_load']; ?></span><br/>
+				</td>
+				<td>
+				<span><?php echo $post_errors['initial_load']; ?></span>
+				</td>
+			    </tr>
 
-
-				<input type="submit" name="submit" value="Add" />
-
-			</form>
+			  </tbody>
+			</table>
+			<p class="submit">
+				<input type="submit" name="submit" id="submit" class="button button-primary" value="Add Row" />
+			</p>
+		</form>
 
 <?php
 	}
