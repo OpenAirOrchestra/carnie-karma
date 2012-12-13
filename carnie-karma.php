@@ -409,19 +409,17 @@ sss for that user.
          * Process karma load ledger post
          */
         function process_ledger_post() {
-
-		/***********************************
-
+		$post_errors = array();
                 if (current_user_can('add_users')) {
                         $nonce = $_REQUEST['karma_ledger_nonce'];
                         if ($nonce && wp_verify_nonce($nonce, 'karma_ledger_nonce')) {
                                 // Process post
                                 $loadController = new carnieKarmaLoadController;
-                                $loadController->process_post();
+                                $post_errors = $loadController->process_post();
                         }
                 }
 
-		************************************/
+		return $post_errors;
         }
 
 	/*
@@ -519,7 +517,7 @@ sss for that user.
                 <h2>Karmic Load Ledger</h2>
 <?php
 
-		$this->process_ledger_post();
+		$post_errors = $this->process_ledger_post();
 
 		 global $wpdb;
 
@@ -579,7 +577,7 @@ sss for that user.
 		$loadView = new carnieKarmaLoadView;
 		$loadView->render_table( $rows, $orderBy, $order, $all_count, $filtered_count, $limit, $paged );
 		if (current_user_can('add_users')) {
-			$loadView->render_add_form();
+			$loadView->render_add_form($post_errors);
 		}
 
 	}

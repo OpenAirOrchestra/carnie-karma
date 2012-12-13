@@ -278,7 +278,7 @@ class carnieKarmaLoadView {
 	/*
 	 * Render form for adding a new row
 	 */
-	function render_add_form() {
+	function render_add_form($post_errors) {
                 $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
                 $users = get_users('orderby=nicename');
 ?>  
@@ -305,7 +305,7 @@ class carnieKarmaLoadView {
 				</select>
 
 				Initial Karmic Load:
-				<input type="text" name="inital_load"/>
+				<input type="text" name="initial_load"/>
 
 
 				<input type="submit" name="submit" value="Add" />
