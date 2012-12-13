@@ -33,11 +33,6 @@ class carnieKarmaLoadController {
 				$post_errors['initial_load'] = "Initial Load is a required field";
 			}
 			
-			echo "<pre>";
-			var_dump($_POST);
-			var_dump($post_errors);
-			echo "</pre>";
-
 			if (count($post_errors) == 0) {
 
 				global $wpdb;

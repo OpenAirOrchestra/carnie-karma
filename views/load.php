@@ -291,8 +291,10 @@ class carnieKarmaLoadView {
 				<input type="hidden" name="action" value="add" />
 				Notes:
 				<input type="textarea" name="notes"/>
+				<span><?php echo $post_errors['notes']; ?></span><br/>
 				Date:
 				<input type="text" name="date"/>
+				<span><?php echo $post_errors['date']; ?></span><br/>
 
 				User:
 				<select name="user_id">
@@ -306,9 +308,11 @@ class carnieKarmaLoadView {
 			}
 ?>
 				</select>
+				<span><?php echo $post_errors['user_id']; ?></span><br/>
 
 				Initial Karmic Load:
 				<input type="text" name="initial_load"/>
+				<span><?php echo $post_errors['initial_load']; ?></span><br/>
 
 
 				<input type="submit" name="submit" value="Add" />
