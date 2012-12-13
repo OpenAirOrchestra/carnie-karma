@@ -34,13 +34,12 @@ class carnieKarmaLoadController {
 			}
 			
 			echo "<pre>";
+			var_dump($_POST);
 			var_dump($post_errors);
 			echo "</pre>";
 
 			if (count($post_errors) == 0) {
 
-				echo "BOOM";
-				
 				global $wpdb;
 
 				// Add the record

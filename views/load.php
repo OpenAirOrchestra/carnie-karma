@@ -135,13 +135,16 @@ class carnieKarmaLoadView {
 	function render_history($history) {
 		foreach ($history as $meta) {
 
-			if (strcasecmp($meta['meta_key'], 'deleted_by') == 0) {
+			if (strcasecmp($meta['meta_key'], 'deleted_by') == 0 ||
+			    strcasecmp($meta['meta_key'], 'created_by') == 0
+				) {
 				// Deleted by, let's get a user nicename from
 				// user id
 				echo str_replace( '_', ' ', $meta['meta_key']) . ": ";
 				$user_id = $meta['meta_value'];
 				$user_info = get_userdata($user_id);
 				echo $user_info->user_login;
+				echo "<br/>";
 			} else {
 				echo str_replace( '_', ' ', $meta['meta_key']) . ": ";
 				echo $meta['meta_value'] . "<br/>";
