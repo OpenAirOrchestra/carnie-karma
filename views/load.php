@@ -306,7 +306,7 @@ class carnieKarmaLoadView {
 				<p class="description">Put the name of the tour or other event here.</p>
 				</td>
 				<td>
-				<span><?php echo $post_errors['notes']; ?></span>
+				<span class="error-message"><?php echo $post_errors['notes']; ?></span>
 				</td>
 			    </tr>
 			    <tr valign="top">
@@ -318,7 +318,7 @@ class carnieKarmaLoadView {
 				<p class="description">The date the karmic load is incurred e.g., <?php echo date("Y-m-d"); ?>. Note that the date must be in the present or past, it may not be in the future.</p>
 				</td>
 				<td>
-				<span><?php echo $post_errors['date']; ?></span>
+				<span class="error-message"><?php echo $post_errors['date']; ?></span>
 				</td>
 			    </tr>
 			    <tr valign="top">
@@ -340,7 +340,7 @@ class carnieKarmaLoadView {
 				<p class="description"> </p>
 				</td>
 				<td>
-				<span><?php echo $post_errors['user_id']; ?></span>
+				<span class="error-message"><?php echo $post_errors['user_id']; ?></span>
 				</td>
 
 			    </tr>
@@ -353,7 +353,7 @@ class carnieKarmaLoadView {
 				<p class="description">The initial value of the karmic load.</p>
 				</td>
 				<td>
-				<span><?php echo $post_errors['initial_load']; ?></span>
+				<span class="error-message"><?php echo $post_errors['initial_load']; ?></span>
 				</td>
 			    </tr>
 

@@ -18,3 +18,7 @@ tr.deleted td.column-inital-load {
 td.column-history {
 	font-size: smaller;
 }
+
+span.error-message {
+	color: red;
+}

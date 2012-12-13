@@ -117,7 +117,7 @@ class carnieKarmaLoadController {
 		}
 		$limit = $_REQUEST['limit'];
 		if (! $limit) {
-			$limit = 30;
+			$limit = 15;
 		}
 		$offset = $limit * ($paged - 1);
 
