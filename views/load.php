@@ -280,6 +280,7 @@ class carnieKarmaLoadView {
 	 */
 	function render_add_form() {
                 $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
+                $users = get_users('orderby=nicename');
 ?>  
 		      <h3> Add Row </h3>
 			<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
@@ -291,7 +292,17 @@ class carnieKarmaLoadView {
 				<input type="text" name="date"/>
 
 				User:
-				<input type="choice" name="user"/>
+				<select name="user_id">
+<?php
+			foreach($users as $user) {
+				if ($user->user_login != 'admin') {
+					echo '<option value=\"' . $user->ID . '\">' ; 
+					echo $user->display_name . " (" . $user->user_nicename . ")" ;
+					echo '</option>';
+				}
+			}
+?>
+				</select>
 
 				Initial Karmic Load:
 				<input type="text" name="inital_load"/>
