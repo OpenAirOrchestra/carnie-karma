@@ -152,7 +152,7 @@ class carnieKarmaLoadView {
         /*
          * render a row in karmic load table
          */
-        function render_row( $row, $history, $karma_ledger_delete_nonce, $karma_ledger_nonce ) {
+        function render_row( $row, $history, $karma_ledger_delete_nonce ) {
 		$user_id = $row["user_id"];
 		$user_info = get_userdata($user_id);
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
@@ -229,7 +229,6 @@ class carnieKarmaLoadView {
                 echo '          <tbody id="the-list">';
 
                 $karma_ledger_delete_nonce = wp_create_nonce('karma_ledger_delete_nonce');
-                $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
 
                 foreach ($rows as $row)
                 {
@@ -245,7 +244,7 @@ class carnieKarmaLoadView {
 				", $row['id']);
 			$history = $wpdb->get_results( $sql, ARRAY_A );
 
-                        $this->render_row($row, $history, $karma_ledger_delete_nonce, $karma_ledger_nonce);
+                        $this->render_row($row, $history, $karma_ledger_delete_nonce);
                 }
                 echo '          </tbody>';
         }
@@ -276,5 +275,33 @@ class carnieKarmaLoadView {
 		$this->render_table_nav( "bottom", $all_count, $filtered_count, $limit, $paged );
 	}
 
+	/*
+	 * Render form for adding a new row
+	 */
+	function render_add_form() {
+                $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
+?>  
+		      <h3> Add Row </h3>
+			<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+				<input type="hidden" name="karma_ledger_nonce" value="<?php echo $karma_ledger_nonce; ?>" />
+				<input type="hidden" name="action" value="add" />
+				Notes:
+				<input type="textarea" name="notes"/>
+				Date:
+				<input type="text" name="date"/>
+
+				User:
+				<input type="choice" name="user"/>
+
+				Initial Karmic Load:
+				<input type="text" name="inital_load"/>
+
+
+				<input type="submit" name="submit" value="Add" />
+
+			</form>
+
+<?php
+	}
 }
 ?>

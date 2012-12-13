@@ -578,6 +578,7 @@ sss for that user.
 
 		$loadView = new carnieKarmaLoadView;
 		$loadView->render_table( $rows, $orderBy, $order, $all_count, $filtered_count, $limit, $paged );
+		$loadView->render_add_form();
 
 	}
 
