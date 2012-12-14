@@ -350,7 +350,15 @@ class carnieKarmaLoadView {
 				</th>
 				<td>
 				<input type="number" name="initial_load" id="initial_load" value = "<?php if (count($post_errors)) { echo $_POST['initial_load']; } ?>" />
-				<p class="description">The initial value of the karmic load.</p>
+				<p class="description">
+					The initial value of the karmic load.
+					For reference, the karma accrued by
+					participating in a gig is
+					<?php echo CARNIE_KARMA_GIG_MULTIPLIER; ?>. 
+					The karma accrued by participating in a 
+					workshop is
+					<?php echo CARNIE_KARMA_WORKSHOP_MULTIPLIER; ?>. 
+				</p>
 				</td>
 				<td>
 				<span class="error-message"><?php echo $post_errors['initial_load']; ?></span>
