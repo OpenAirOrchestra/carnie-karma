@@ -198,8 +198,15 @@ class carnieKarmaLoadView {
 			<td class="date column-date"><?php echo $row["date"]; ?></td>
 			<td class="user_id column-user-id">
 <?php
-		if ($user_info->first_name || $user_info->last_name) {
-			echo $user_info->first_name . ' ' . $user_info->last_name;
+		if (! $user_info) {
+			echo 'deleted user (' . $user_id . ')';
+		} else if ($user_info->first_name || $user_info->last_name) {
+			echo htmlentities(stripslashes($user_info->first_name)) . ' ' ; 
+			if (current_user_can('edit_users')) {
+				echo htmlentities(stripslashes($user_info->last_name));
+			} else if ($user_info->last_name) {
+				echo substr(htmlentities(stripslashes($user_info->last_name)), 0, 1);
+			}
 			echo ' (<a href="' . $edit_url . '">' .
 				$user_info->user_login . 
 				" " . $user_id .
