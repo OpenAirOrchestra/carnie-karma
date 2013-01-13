@@ -207,16 +207,30 @@ class carnieKarmaLoadView {
 			} else if ($user_info->last_name) {
 				echo substr(htmlentities(stripslashes($user_info->last_name)), 0, 1);
 			}
-			echo ' (<a href="' . $edit_url . '">' .
-				$user_info->user_login . 
-				" " . $user_id .
-				'</a>)';
+			if (current_user_can('edit_users')) {
+				echo ' (<a href="' . $edit_url . '">' .
+					$user_info->user_login . 
+					" " . $user_id .
+					'</a>)';
+			} else {
+				echo ' (' .
+					$user_info->user_login . 
+					" " . $user_id .
+					')';
+			}
 		} else {
 			echo $user->display_name;
-			echo ' (<a href="' . $edit_url . '">' .
-				$user_info->user_login . 
-				" " . $user_id .
-				'</a>)';
+			if (current_user_can('edit_users')) {
+				echo ' (<a href="' . $edit_url . '">' .
+					$user_info->user_login . 
+					" " . $user_id .
+					'</a>)';
+			} else {
+				echo ' (' .
+					$user_info->user_login . 
+					" " . $user_id .
+					')';
+			}
 		}
 ?>
 			</td>
