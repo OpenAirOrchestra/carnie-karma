@@ -21,7 +21,7 @@ class carnieKarmaUserView {
 			<p>
 				Verified Gigs: <?php echo ($gigs ? $gigs : 0); ?>
 				<br/>
-				Verified Gig Participation Karma: <?php echo ($gig_karma ? $gig_karma : 0); ?>
+				Verified Gig Participation Karma: <?php echo ($gig_karma ? number_format($gig_karma, 2) : 0); ?>
 				<br/>
                 		<input type="submit" value="Details" />
 			</p>
@@ -47,7 +47,7 @@ class carnieKarmaUserView {
 			<p>
 				Workshops: <?php echo ($workshops ? $workshops : 0); ?>
 				<br/>
-				Workshop Participation Karma: <?php echo ($workshop_karma ? $workshop_karma : 0); ?>
+				Workshop Participation Karma: <?php echo ($workshop_karma ? number_format($workshop_karma, 2) : 0); ?>
 				<br/>
                 		<input type="submit" value="Details" />
 			</p>
@@ -71,7 +71,7 @@ class carnieKarmaUserView {
 			<p>
 				Tours: <?php echo ($tours ? $tours : 0); ?>
 				<br/>
-				Karmic Load: <?php echo ($karmic_load ? $karmic_load : 0); ?>
+				Karmic Load: <?php echo ($karmic_load ? number_format($karmic_load, 2) : 0); ?>
 				<br/>
                 		<input type="submit" value="Details" />
 			</p>
@@ -83,10 +83,12 @@ class carnieKarmaUserView {
  	 * Renders Karmic balance
 	 */
 	function render_balance($user_id, $workshop_karma, $gig_karma, $karmic_load) {
+		$balance = $workshop_karma + $gig_karma - $karmic_load;
 ?>
+
 		<h3>Karmic Balance</h3>
 		<br/>
-			Karmic Balance: <?php print $workshop_karma + $gig_karma - $karmic_load; ?>
+			Karmic Balance: <?php print abs($balance) < 0.1 ? $balance : number_format($balance, 2); ?>
 		</p>
 <?php
 	}
