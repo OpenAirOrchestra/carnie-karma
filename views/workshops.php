@@ -68,6 +68,8 @@ class carnieKarmaWorkshopsView {
 		print "<tbody>";
 		foreach ($workshops as $workshop) {
 
+			$karma = $workshop['karma'];
+
 			$workshop_url = $siteurl . '/wp-admin/admin.php?page=workshop&workshop=' . $workshop['workshop_id'];
 
 			print "<tr>";
@@ -77,7 +79,7 @@ class carnieKarmaWorkshopsView {
 			echo $workshop['title'];
 			echo "</a>";
 			echo "</td>";
-			echo "<td>" .  $workshop['karma'] . " </td>";
+			echo "<td>" .  (abs($karma) < 0.1 ? $karma : number_format($karma, 2)) . " </td>";
 			print "</tr>";
 		}
 		print "</tbody>";

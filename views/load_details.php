@@ -69,13 +69,15 @@ class carnieKarmaLoadDetailsView {
 		print "<tbody>";
 		foreach ($details as $detail) {
 
+			$karma = $detail['karma'];
+
 			print "<tr>";
 			echo "<td>" .  $detail['date'] . " </td>";
 			echo "<td>";
 			echo $detail['notes'];
 			echo "</td>";
 			echo "<td>" .  $detail['initial_load'] . " </td>";
-			echo "<td>" .  $detail['karma'] . " </td>";
+			echo "<td>" .  (abs($karma) < 0.1 ? $karma : number_format($karma, 2)) . " </td>";
 			print "</tr>";
 		}
 		print "</tbody>";
