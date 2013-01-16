@@ -150,7 +150,7 @@ class carnieKarma {
                                 id bigint(20) NOT NULL AUTO_INCREMENT,
                                 user_id bigint(20) ,
                         	date date DEFAULT '0000-00-00' NOT NULL,
-                                initial_load bigint(20),
+                                initial_load double,
                                 notes text,
                                 deleted smallint(6),
                                 UNIQUE KEY id (id) );";
