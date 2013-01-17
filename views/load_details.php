@@ -13,8 +13,8 @@ class carnieKarmaLoadDetailsView {
                 <tr>
 			<th>Date</th>
 			<th>Title</th>
-			<th>Initial Load</th>
-			<th>Karma</th>
+			<th>Initial Karma Load</th>
+			<th>Karma Load Today</th>
                 </tr>
 <?php
 	}
