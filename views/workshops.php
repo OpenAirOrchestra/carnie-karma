@@ -73,7 +73,7 @@ class carnieKarmaWorkshopsView {
 			$workshop_url = $siteurl . '/wp-admin/admin.php?page=workshop&workshop=' . $workshop['workshop_id'];
 
 			print "<tr>";
-			echo "<td>" .  $workshop['date'] . " </td>";
+			echo "<td>" . str_replace('-', '&#x2011;', $workshop['date']). " </td>";
 			echo "<td>";
 			echo '<a href="' . $workshop_url . '">';
 			echo $workshop['title'];

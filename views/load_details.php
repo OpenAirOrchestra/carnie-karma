@@ -73,7 +73,7 @@ class carnieKarmaLoadDetailsView {
 			$initial_load = $detail['initial_load'];
 
 			print "<tr>";
-			echo "<td>" .  $detail['date'] . " </td>";
+			echo "<td>" .  str_replace('-', '&#x2011;', $detail['date']) . " </td>";
 			echo "<td>";
 			echo $detail['notes'];
 			echo "</td>";

@@ -72,7 +72,7 @@ class carnieKarmaGigsView {
 			$gig_url = get_permalink($gig['gigid']);
 
 			print "<tr>";
-			echo "<td>" .  $gig['date'] . " </td>";
+			echo "<td>" .  str_replace('-', '&#x2011;', $gig['date']) . " </td>";
 			echo "<td>";
 			echo '<a href="' . $gig_url . '">';
 			echo $gig['title'];
