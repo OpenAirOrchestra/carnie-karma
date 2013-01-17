@@ -11,6 +11,9 @@ class carnieKarmaUserView {
 	 * with link to detailed table
 	 */
 	function render_gig_summary($user_id, $gigs, $gig_karma, $karma_detail_nonce) {
+		if (! $gig_karma) {
+			$gig_karma = 0;
+		}
 ?>
 		<h3>Verified Gig Participation Karma</h3>
 
@@ -21,7 +24,7 @@ class carnieKarmaUserView {
 			<p>
 				Verified Gigs: <?php echo ($gigs ? $gigs : 0); ?>
 				<br/>
-				Verified Gig Participation Karma: <?php echo ($gig_karma ? number_format($gig_karma, 2) : 0); ?>
+				Verified Gig Participation Karma: <?php echo (abs($gig_karma) < 0.1 ? $gig_karma : number_format($gig_karma, 1)); ?>
 				<br/>
                 		<input type="submit" value="Details" />
 			</p>
@@ -47,7 +50,7 @@ class carnieKarmaUserView {
 			<p>
 				Workshops: <?php echo ($workshops ? $workshops : 0); ?>
 				<br/>
-				Workshop Participation Karma: <?php echo ($workshop_karma ? number_format($workshop_karma, 2) : 0); ?>
+				Workshop Participation Karma: <?php echo ($workshop_karma ? number_format($workshop_karma, 1) : 0); ?>
 				<br/>
                 		<input type="submit" value="Details" />
 			</p>
@@ -71,7 +74,7 @@ class carnieKarmaUserView {
 			<p>
 				Tours: <?php echo ($tours ? $tours : 0); ?>
 				<br/>
-				Karmic Load: <?php echo ($karmic_load ? number_format($karmic_load, 2) : 0); ?>
+				Karmic Load: <?php echo ($karmic_load ? number_format($karmic_load, 1) : 0); ?>
 				<br/>
                 		<input type="submit" value="Details" />
 			</p>
@@ -88,7 +91,7 @@ class carnieKarmaUserView {
 
 		<h3>Karmic Balance</h3>
 		<br/>
-			Karmic Balance: <?php print abs($balance) < 0.1 ? $balance : number_format($balance, 2); ?>
+			Karmic Balance: <?php print abs($balance) < 0.1 ? $balance : number_format($balance, 1); ?>
 		</p>
 <?php
 	}

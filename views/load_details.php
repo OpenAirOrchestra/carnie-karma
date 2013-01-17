@@ -77,7 +77,7 @@ class carnieKarmaLoadDetailsView {
 			echo $detail['notes'];
 			echo "</td>";
 			echo "<td>" .  $detail['initial_load'] . " </td>";
-			echo "<td>" .  (abs($karma) < 0.1 ? $karma : number_format($karma, 2)) . " </td>";
+			echo "<td>" .  (abs($karma) < 0.1 ? $karma : number_format($karma, 1)) . " </td>";
 			print "</tr>";
 		}
 		print "</tbody>";

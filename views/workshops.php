@@ -79,7 +79,7 @@ class carnieKarmaWorkshopsView {
 			echo $workshop['title'];
 			echo "</a>";
 			echo "</td>";
-			echo "<td>" .  (abs($karma) < 0.1 ? $karma : number_format($karma, 2)) . " </td>";
+			echo "<td>" .  (abs($karma) < 0.1 ? $karma : number_format($karma, 1)) . " </td>";
 			print "</tr>";
 		}
 		print "</tbody>";
