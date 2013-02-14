@@ -3,7 +3,7 @@
 Plugin Name: Carnie Karma 
 Plugin URI: http://www.thecarnivalband.com
 Description: A plugin to calculate and display participation Karma for The Carnival Band
-Version: 0.1
+Version: 0.2
 Author: DarrylF
 Author URI: http://www.thecarnivalband.com
 License: GPL2
@@ -37,6 +37,7 @@ require_once $include_folder . '/views/gigs.php';
 require_once $include_folder . '/views/load_details.php';
 require_once $include_folder . '/views/load.php';
 require_once $include_folder . '/views/tables.php';
+require_once $include_folder . '/views/export_csv_form.php';
 require_once $include_folder . '/controllers/workshops.php';
 require_once $include_folder . '/controllers/gigs.php';
 require_once $include_folder . '/controllers/load.php';
@@ -323,12 +324,14 @@ sss for that user.
                         wp_die( __('You do not have sufficient permissions to access this page.') );
                 }
 
+		$exportCsvFormView = new carnieKarmaCsvExportView;
+
                 echo '<div class="wrap">';
                 echo "<h2>Export Carnie Karma Totals</h2>";
                 echo "<p>When you click the button below WordPress will create a CSV file for you to save to your computer.</p>";
                 echo "<p>Once you have saved the download file, you can load  into a spreadsheet program like Excel.</p>";
 
-
+		$exportCsvFormView->exportKarmaBalanceForm();
 	}
 
 
