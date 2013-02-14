@@ -318,6 +318,20 @@ sss for that user.
 		}
 	}
 
+	function export_karma_page() {
+                if (!current_user_can('read_private_posts'))  {
+                        wp_die( __('You do not have sufficient permissions to access this page.') );
+                }
+
+                echo '<div class="wrap">';
+                echo "<h2>Export Carnie Karma Totals</h2>";
+                echo "<p>When you click the button below WordPress will create a CSV file for you to save to your computer.</p>";
+                echo "<p>Once you have saved the download file, you can load  into a spreadsheet program like Excel.</p>";
+
+
+	}
+
+
         /*
          * Handles carniekarma shortcode
          * examples:
@@ -429,6 +443,9 @@ sss for that user.
 
                 // Add object page
                 $page = add_object_page( 'Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url( 'images/karma16.png' , __FILE__ ));
+
+		// Add tools page
+		add_management_page('Export Carnie Karma', 'Export Carnie Karma', 'read_private_posts', 'export-carnie-karma-tools', array($this, 'export_karma_page'));
 	}
 
 	   
