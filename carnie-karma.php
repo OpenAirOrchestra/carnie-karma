@@ -57,7 +57,16 @@ class carnieKarma {
 
 	 	if ($version) {
 			// Do upgrades 
-			update_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
+			if ($version < CARNIE_KARMA_DB_VERSION) {
+	
+				if ($version <= 1) {
+					$this->migrate_load_ledger_v1();
+					$version = 2;
+				}
+
+				// save new db version
+				update_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
+			}
 		} else {
 			// Create views
                         global $wpdb;
@@ -194,6 +203,47 @@ class carnieKarma {
 			add_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
 		}
 
+	}
+
+	/*
+	 * Update the math for the calculated karmic load to gracefully
+	 * handle entries with a future date
+	 */
+	function migrate_load_ledger_v1() {
+		global $wpdb;
+		$karma_load_table_name = $wpdb->prefix . "karmic_load_ledger";
+		$karma_load_view_name = $wpdb->prefix . "karmic_load";
+
+		/*
+		The change is to add in the GREATEST ( blah, 0) as follows:
+		wp_karmic_load_ledger.initial_load * 
+		POW( 0.998, 
+		     GREATEST( DATEDIFF( CURRENT_DATE( ) , wp_karmic_load_ledger.date ), 
+		       0))
+
+		 */
+		$sql = "
+			ALTER VIEW 
+			$karma_load_view_name
+			AS
+			SELECT 
+				$karma_load_table_name.id AS id,
+				$karma_load_table_name.notes AS notes,
+				$karma_load_table_name.user_id AS userid,
+				$karma_load_table_name.date AS date,
+				$karma_load_table_name.initial_load AS initial_load,
+				( $karma_load_table_name.initial_load * 
+                                  POW(0.998 , 
+ 				      GREATEST( DATEDIFF( CURRENT_DATE( ) , $karma_load_table_name.date ) , 0) 
+ 				   ) ) 
+                                AS karma 
+			FROM 
+				$karma_load_table_name
+			WHERE 
+				$karma_load_table_name.deleted IS NULL OR  $karma_load_table_name.deleted = 0 
+		";
+
+		$wpdb->query($sql);
 	}
 
 	/*

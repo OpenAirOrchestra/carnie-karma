@@ -336,7 +336,7 @@ class carnieKarmaLoadView {
 				</th>
 				<td>
 				<input type="text" name="date" id="date" class="regular-text" value="<?php if (count($post_errors)) { echo $_POST['date']; } ?>" />
-				<p class="description">The date the karmic load is incurred e.g., <?php echo date("Y-m-d"); ?>. Note that the date must be in the present or past, it may not be in the future.</p>
+				<p class="description">The date the karmic load is incurred e.g., <?php echo date("Y-m-d"); ?>.</p>
 				</td>
 				<td>
 				<span class="error-message"><?php echo $post_errors['date']; ?></span>
