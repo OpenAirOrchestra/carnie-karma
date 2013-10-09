@@ -628,7 +628,7 @@ sss for that user.
 
 		$table_name = $wpdb->prefix . "karmic_load_ledger";
 
- 		$all_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name;" ) );
+ 		$all_count = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name;" );
                 $filtered_count = $all_count;
 
                 $sql = $wpdb->prepare("
