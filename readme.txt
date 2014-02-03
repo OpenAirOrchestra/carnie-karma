@@ -1,5 +1,5 @@
 === Workshop Attendance ===
-Contributors: darrylf
+Contributors: darrylf Richard K
 Donate link: http://www.thecarnivalband.com/
 Tags: gigs, particpation
 Requires at least: 3.5
