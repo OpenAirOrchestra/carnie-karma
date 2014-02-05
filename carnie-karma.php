@@ -247,11 +247,27 @@ class carnieKarma {
 	}
 
 	/*
+		Get list of active users (i.e. current authors)
+	*/
+	public static function users() {
+		global $wpdb;
+
+		$sql = $wpdb->prepare("SELECT u.display_name, u.ID, u.user_email, u.user_login, u.user_nicename
+								FROM  `wp_users` u
+								JOIN  `wp_usermeta` m ON u.id = m.user_id AND m.meta_key IN ('wp_capabilities')								
+								WHERE u.id <> 1 
+								AND m.meta_value LIKE '%%author%%'
+								ORDER BY u.user_nicename", $workshop_id);
+		$users = $wpdb->get_results( $sql, ARRAY_A );
+		return $users;
+	}
+	
+	/*
 	 * Renders a list of users, each linking to a karma repors
 sss for that user.
 	 */
 	function list_users() {
-		$users = get_users('orderby=nicename');
+		$users = carnieKarma::users();
 		$usersView = new carnieKarmaUsersView;
 		$usersView->render($users);
 	}

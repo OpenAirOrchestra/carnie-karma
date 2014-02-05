@@ -219,7 +219,7 @@ class carnieKarmaLoadView {
 					')';
 			}
 		} else {
-			echo $user->display_name;
+			echo $user['display_name'];
 			if (current_user_can('edit_users')) {
 				echo ' (<a href="' . $edit_url . '">' .
 					$user_info->user_login . 
@@ -304,7 +304,7 @@ class carnieKarmaLoadView {
 	 */
 	function render_add_form($post_errors) {
                 $karma_ledger_nonce = wp_create_nonce('karma_ledger_nonce');
-                $users = get_users('orderby=nicename');
+                $users = carnieKarma::users();
 		
 ?>  
 	      
@@ -350,9 +350,9 @@ class carnieKarmaLoadView {
 				<select name="user_id">
 <?php
 			foreach($users as $user) {
-				if ($user->user_login != 'admin') {
-					echo '<option value="' . $user->ID . '">' ; 
-					echo $user->display_name . " (" . $user->user_nicename . ")" ;
+				if ($user['user_login'] != 'admin') {
+					echo '<option value="' . $user['ID'] . '">' ; 
+					echo $user['display_name'] . " (" . $user['user_nicename'] . ")" ;
 					echo '</option>';
 				}
 			}

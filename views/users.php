@@ -22,20 +22,20 @@ class carnieKarmaUsersView {
 
 	
 		foreach ($users as $user) {
-			if ($user->ID != 1) {
+			if ($user['ID'] != 1) {
 				print "<LI>";
 ?>
         <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
                 <input type="hidden" name="karma_list_nonce" value="<?php echo $karma_list_nonce; ?>" />
-                <input type="hidden" name="user_id" value="<?php echo $user->ID; ?>" />
+                <input type="hidden" name="user_id" value="<?php echo $user['ID']; ?>" />
 <?php
-				$user_info = get_userdata($user->ID);
+				$user_info = get_userdata($user['ID']);
 				if ($user_info->first_name || $user_info->last_name) {
 					echo $user_info->first_name . ' ' . $user_info->last_name;
-					echo ' (' . $user->user_login . ')';
+					echo ' (' . $user['user_login'] . ')';
 				} else {
-					echo $user->display_name;
-					echo ' (' . $user->user_login . ')';
+					echo $user['display_name'];
+					echo ' (' . $user['user_login'] . ')';
 				}
 				
 ?>

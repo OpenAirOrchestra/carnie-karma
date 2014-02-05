@@ -19,17 +19,17 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 
 	if (current_user_can('read_private_posts')) {
 
-		$users = get_users('orderby=nicename');
+		$users = carnieKarma::users();
 		foreach ($users as $user) {
-			if ($user->ID != 1) {
+			if ($user['ID'] != 1) {
 			
-				$user_info = get_userdata($user->ID);
+				$user_info = get_userdata($user['ID']);
 
 				// user id
-				echo "$user->ID" . ",";
+				echo "$user['ID']" . ",";
 
 				// user nicename
-				$field = $user->user_nicename;
+				$field = $user['user_nicename'];
 				if ($field != NULL) {
 					$field = str_replace("\"", "\"\"", $field);
 					$field = str_replace(array('\n', '\r'), " ", $field);
@@ -68,7 +68,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 					  WHERE  user_id = %d
 					",
 					CARNIE_KARMA_WORKSHOP_MULTIPLIER,
-					$user->ID
+					$user['ID']
 					);
 
 				$workshop_row = $wpdb->get_row($sql, ARRAY_A);
@@ -81,7 +81,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 					  WHERE  userid = %d
 					",
 					CARNIE_KARMA_GIG_MULTIPLIER,
-					$user->ID
+					$user['ID']
 					);
 				$gig_row = $wpdb->get_row($sql, ARRAY_A);
 
@@ -93,7 +93,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 					  WHERE  userid = %d
 					",
 					CARNIE_KARMA_LOAD_MULTIPLIER,
-					$user->ID
+					$user['ID']
 					);
 				$load_row = $wpdb->get_row($sql, ARRAY_A);
 
