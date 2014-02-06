@@ -251,12 +251,19 @@ class carnieKarma {
 	*/
 	public static function users() {
 		global $wpdb;
-
+		$users_name = $wpdb->prefix . "users";
+		$usermeta_name = $wpdb->prefix . "usermeta";
+		
 		$sql = $wpdb->prepare("SELECT u.display_name, u.ID, u.user_email, u.user_login, u.user_nicename
-								FROM  `wp_users` u
-								JOIN  `wp_usermeta` m ON u.id = m.user_id AND m.meta_key IN ('wp_capabilities')								
+								FROM  `$users_name` u
+								JOIN  `$usermeta_name` m ON u.id = m.user_id AND m.meta_key IN ('wp_capabilities')								
 								WHERE u.id <> 1 
-								AND m.meta_value LIKE '%%author%%'
+								AND 
+									(
+										m.meta_value LIKE '%%author%%'
+										OR m.meta_value LIKE '%%editor%%'
+										OR m.meta_value LIKE '%%administrator%%'
+									)								
 								ORDER BY u.user_nicename", $workshop_id);
 		$users = $wpdb->get_results( $sql, ARRAY_A );
 		return $users;
