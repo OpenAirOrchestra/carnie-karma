@@ -14,6 +14,16 @@ $Filename = "KarmaBalances.csv";
 header("Content-Type: text/csv");
 header("Content-Disposition: attachment; filename=$Filename");
 
+function outputField($field)
+{
+	if ($field != NULL) {
+		$field = str_replace("\"", "\"\"", $field);
+		$field = str_replace(array('\n', '\r'), " ", $field);
+	}
+	echo "\"" . stripslashes($field) . "\"";
+	echo ",";	
+}
+
 // Verify nonce.
 if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-verify-key') ) {
 
@@ -26,34 +36,16 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				$user_info = get_userdata($user['ID']);
 
 				// user id
-				echo "$user['ID']" . ",";
+				outputField($user['ID']);
 
 				// user nicename
-				$field = $user['user_nicename'];
-				if ($field != NULL) {
-					$field = str_replace("\"", "\"\"", $field);
-					$field = str_replace(array('\n', '\r'), " ", $field);
-				}
-				echo "\"" . stripslashes($field) . "\"";
-				echo ",";
+				outputField($user['user_nicename']);
 
 				// user firstname
-				$field = $user_info->first_name;
-				if ($field != NULL) {
-					$field = str_replace("\"", "\"\"", $field);
-					$field = str_replace(array('\n', '\r'), " ", $field);
-				}
-				echo "\"" . stripslashes($field) . "\"";
-				echo ",";
+				outputField($user['first_name']);
 
 				// user lastname
-				$field = $user_info->last_name;
-				if ($field != NULL) {
-					$field = str_replace("\"", "\"\"", $field);
-					$field = str_replace(array('\n', '\r'), " ", $field);
-				}
-				echo "\"" . stripslashes($field) . "\"";
-				echo ",";
+				outputField($user['last_name']);
 
 				// balance
 				$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
