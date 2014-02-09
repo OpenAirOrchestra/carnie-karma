@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Carnie Karma 
-Plugin URI: http://www.thecarnivalband.com
+Plugin URI: https://github.com/OpenAirOrchestra/workshop_attendance
 Description: A plugin to calculate and display participation Karma for The Carnival Band
-Version: 0.2
+Version: 0.3
 Author: DarrylF
 Author URI: http://www.thecarnivalband.com
 License: GPL2
