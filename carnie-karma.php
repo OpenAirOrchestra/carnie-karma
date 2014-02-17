@@ -631,6 +631,7 @@ sss for that user.
                 $orderBy = 'id';
                 $order = 'DESC';
                 if ( strcasecmp($_REQUEST["orderby"], 'title') == 0 ||
+                        strcasecmp($_REQUEST["orderby"], 'user_id') == 0) ||
                         strcasecmp($_REQUEST["orderby"], 'date') == 0) {
                         $orderBy = strtolower($_REQUEST["orderby"]);
                 }
