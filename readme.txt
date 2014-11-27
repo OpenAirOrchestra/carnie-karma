@@ -2,8 +2,8 @@
 Contributors: darrylf Richard K
 Donate link: http://www.thecarnivalband.com/
 Tags: gigs, particpation
-Requires at least: 3.7
-Tested up to: 3.8.1
+Requires at least: 3.9
+Tested up to: 4.0.1
 Stable tag: 0.3
 
 A plugin to calculate and display participation Karma for The Carnival Band
