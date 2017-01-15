@@ -66,13 +66,16 @@ class carnieKarma {
 					$version = 2;
 				}
 
+				if ($version <= 2) {
+					$this->migrate_views_v2();
+					$version = 3;
+				}
+
 				// save new db version
 				update_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
 			}
 		} else {
 			$this->create_tables();
-
-			$this->create_views();
 
 			add_option("carniekarma_db_version", CARNIE_KARMA_DB_VERSION);
 		}
@@ -118,6 +121,27 @@ class carnieKarma {
 		";
 
 		$wpdb->query($sql);
+	}
+
+	function migrate_views_v2() {
+		global $wpdb;
+
+		// Delete views that are no longer used.
+		$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
+		$gig_karma_view_name = $wpdb->prefix . "gig_karma";
+		$karma_load_view_name = $wpdb->prefix . "karmic_load";
+
+		$wpdb->query( "
+			DROP  VIEW
+			$workshop_karma_view_name " );
+
+		$wpdb->query( "
+			DROP  VIEW
+			$gig_karma_view_name " );
+
+		$wpdb->query( "
+			DROP  VIEW
+			$karma_load_view_name " );
 	}
 
 	/*
@@ -565,118 +589,6 @@ sss for that user.
 			meta_key text NOT NULL,
 			meta_value text,
 			UNIQUE KEY meta_id (meta_id) );";
-
-		$wpdb->query($sql);
-	}
-
-	function create_views() {
-
-		global $wpdb;
-
-
-		// Create views
-
-		// Create view for workshop attendance
-		$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
-		$workshops_name = $wpdb->prefix . "workshops";
-		$workshop_attendance_name = $wpdb->prefix . "workshop_attendance";
-
-		$sql = "CREATE VIEW " .
-			$workshop_karma_view_name . 
-			" AS SELECT " .
-			$workshops_name . ".id AS workshop_id, " .
-			$workshops_name . ".title AS title, " .
-			$workshops_name . ".date AS date, " .
-			$workshop_attendance_name . ".user_id AS user_id, " .
-			"POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , " . $workshops_name . ".date ) ) ) AS karma " .
-			"FROM " .
-			$workshops_name . " , " . $workshop_attendance_name . " " . 
-			"WHERE " .
-			$workshops_name . ".id = " . $workshop_attendance_name . ".workshopid ";
-
-
-		/*
-		CREATE VIEW 
-			wp_workshop_karma
-		AS
-		SELECT 
-			wp_workshops.id AS workshop_id, 
-			wp_workshops.title AS title, 
-			wp_workshops.date AS DATE, 
-			wp_workshop_attendance.user_id AS user_id, 
-			POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , wp_workshops.date ) )) AS karma
-		FROM 
-			wp_workshops, wp_workshop_attendance
-		WHERE 
-			wp_workshop_attendance.workshopid = wp_workshops.id
-		*/
-		$wpdb->query($sql);
-		
-
-		// Create verified gig attendance view
-		$gig_karma_view_name = $wpdb->prefix . "gig_karma";
-		$posts_name = $wpdb->prefix . "posts";
-		$postmeta_name = $wpdb->prefix . "postmeta";
-		$gig_attendance_name = $wpdb->prefix . "gig_attendance";
-
-		/*
-		CREATE VIEW 
-			wp_gig_karma
-		AS
-		SELECT 
-			wp_gig_attendance.gigid AS gigid,
-			wp_posts.post_title AS title,
-			wp_gig_attendance.user_id AS userid,
-			wp_postmeta.meta_value AS date,
-			POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , wp_postmeta.meta_value) ) ) AS karma 
-		FROM 
-			wp_gig_attendance, wp_postmeta, wp_posts
-		WHERE 
-			wp_gig_attendance.gigid = wp_postmeta.post_id
-			AND wp_gig_attendance.gigid = wp_posts.ID
-			AND wp_postmeta.meta_key =  "cbg_date"
-			AND ( wp_gig_attendance.deleted IS NULL OR  wp_gig_attendance.deleted = 0 )
-		*/
-
-		$sql = "
-			CREATE VIEW 
-				$gig_karma_view_name
-			AS
-			SELECT 
-				$gig_attendance_name.gigid AS gigid,
-				$posts_name.post_title AS title,
-				$gig_attendance_name.user_id AS userid,
-				$postmeta_name.meta_value AS date,
-				POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , $postmeta_name.meta_value) ) ) AS karma 
-			FROM 
-				$gig_attendance_name, $postmeta_name, $posts_name
-			WHERE 
-				$gig_attendance_name.gigid = $postmeta_name.post_id
-				AND $gig_attendance_name.gigid = $posts_name.ID
-				AND $postmeta_name.meta_key =  \"cbg_date\"
-				AND ( $gig_attendance_name.deleted IS NULL OR  $gig_attendance_name.deleted = 0 )
-		";
-
-		$wpdb->query($sql);
-
-		// Create view for calculated karmic load
-		$karma_load_view_name = $wpdb->prefix . "karmic_load";
-		$sql = "
-			CREATE VIEW 
-				$karma_load_view_name
-			AS
-			SELECT 
-				$karma_load_table_name.id AS id,
-				$karma_load_table_name.notes AS notes,
-				$karma_load_table_name.user_id AS userid,
-				$karma_load_table_name.date AS date,
-				$karma_load_table_name.initial_load AS initial_load,
-				( $karma_load_table_name.initial_load * POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , $karma_load_table_name.date ) ) ) ) AS karma 
-			FROM 
-				$karma_load_table_name
-			WHERE 
-				$karma_load_table_name.deleted IS NULL OR  $karma_load_table_name.deleted = 0 
-		";
 
 		$wpdb->query($sql);
 	}
