@@ -10,7 +10,6 @@ class carnieKarmaWorkshopsController {
 	 */
 	function report($user_id) {
 
-
 		// Get paged and limit
 		$paged = $_REQUEST['paged'];
 		if ($_REQUEST['submit-first-page']) {

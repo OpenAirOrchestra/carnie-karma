@@ -69,6 +69,7 @@ class carnieKarmaGigsView {
 		foreach ($gigs as $gig) {
 
 			$karma = $gig['karma'];
+			$karma = doubleval($karma) * CARNIE_KARMA_GIG_MULTIPLIER;
 			$gig_url = get_permalink($gig['gigid']);
 
 			print "<tr>";

@@ -48,6 +48,7 @@ class carnieKarmaGigKarma {
 				AND $gig_attendance_name.gigid = $posts_name.ID
 				AND $postmeta_name.meta_key =  \"cbg_date\"
 				AND ( $gig_attendance_name.deleted IS NULL OR  $gig_attendance_name.deleted = 0 )
+			        ORDER BY date DESC
 		", $user_id);
 
 		$results = $wpdb->get_results($sql, ARRAY_A);

@@ -10,8 +10,6 @@ class carnieKarmaGigsController {
 	 */
 	function report($user_id) {
 
-		global $wpdb;
-
 		$gig_karma_view_name = $wpdb->prefix . "gig_karma";
 
 		// Get paged and limit
@@ -35,33 +33,11 @@ class carnieKarmaGigsController {
 		}
 		$offset = $limit * ($paged - 1);
 
-		// Get all the data (paged view will come later)
+		$gigKarma = new carnieKarmaGigKarma;
+		$gig_karma_rows = $gigKarma->get_rows($user_id);
 
-		$sql = $wpdb->prepare(
-			"
-			SELECT gigid, title, userid, date,
-				(karma * %d) AS karma 
-			  FROM  $gig_karma_view_name
-			  WHERE  userid = %d
-			  ORDER BY date DESC
-			  LIMIT %d, %d
-			",
-			CARNIE_KARMA_GIG_MULTIPLIER,
-			$user_id, $offset, $limit
-			);
-
-		$results = $wpdb->get_results($sql, ARRAY_A);
-
-		// what's to total count of all gigs?
-		$sql = $wpdb->prepare(
-			"
-			SELECT COUNT(*)
-			  FROM  $gig_karma_view_name
-			  WHERE  userid = %d
-			",
-			$user_id
-			);
-		$count = $wpdb->get_var($sql);
+		$count = count($gig_karma_rows);
+		$results = array_slice($gig_karma_rows, $offset, $limit);
 
 		$gigsView = new carnieKarmaGigsView;
 		$gigsView->render($user_id, $results, $count, $paged, $limit);
