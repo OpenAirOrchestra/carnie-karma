@@ -10,8 +10,6 @@ class carnieKarmaGigsController {
 	 */
 	function report($user_id) {
 
-		$gig_karma_view_name = $wpdb->prefix . "gig_karma";
-
 		// Get paged and limit
 		$paged = $_REQUEST['paged'];
 		if ($_REQUEST['submit-first-page']) {

@@ -46,6 +46,7 @@ class carnieKarmaKarmicLoad {
 			WHERE 
 				$karma_load_table_name.user_id = %d
 				AND $karma_load_table_name.deleted IS NULL OR  $karma_load_table_name.deleted = 0 
+			ORDER BY date DESC
 		", $user_id);
 
 		$results = $wpdb->get_results($sql, ARRAY_A);

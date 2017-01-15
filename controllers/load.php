@@ -96,10 +96,6 @@ class carnieKarmaLoadController {
 	 */
 	function report($user_id) {
 
-		global $wpdb;
-
-		$karmic_load_view_name = $wpdb->prefix . "karmic_load";
-
 		// Get paged and limit
 		$paged = $_REQUEST['paged'];
 		if ($_REQUEST['submit-first-page']) {
@@ -122,34 +118,11 @@ class carnieKarmaLoadController {
 		$offset = $limit * ($paged - 1);
 
 		// Get all the data (paged view will come later)
+		$karmicLoad = new carnieKarmaKarmicLoad;
+		$karmic_load_rows = $karmicLoad->get_rows($user_id);
 
-		$sql = $wpdb->prepare(
-			"
-			SELECT id, notes, userid, date, 
-			  ( %d * initial_load) AS initial_load,
-			  ( %d * karma) AS karma
-			  FROM  $karmic_load_view_name
-			  WHERE  userid = %d
-			  ORDER BY date DESC
-			  LIMIT %d, %d
-			",
-			CARNIE_KARMA_LOAD_MULTIPLIER,
-			CARNIE_KARMA_LOAD_MULTIPLIER,
-			$user_id, $offset, $limit
-			);
-
-		$results = $wpdb->get_results($sql, ARRAY_A);
-
-		// what's to total count of all gigs?
-		$sql = $wpdb->prepare(
-			"
-			SELECT COUNT(*)
-			  FROM  $karmic_load_view_name
-			  WHERE  userid = %d
-			",
-			$user_id
-			);
-		$count = $wpdb->get_var($sql);
+		$count = count($karmic_load_rows);
+		$results = array_slice($karmic_load_rows, $offset, $limit);
 
 		$gigsView = new carnieKarmaLoadDetailsView;
 		$gigsView->render($user_id, $results, $count, $paged, $limit);

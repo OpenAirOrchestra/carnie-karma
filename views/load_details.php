@@ -70,7 +70,10 @@ class carnieKarmaLoadDetailsView {
 		foreach ($details as $detail) {
 
 			$karma = $detail['karma'];
+			$karma = doubleval($karma) * CARNIE_KARMA_LOAD_MULTIPLIER;
+
 			$initial_load = $detail['initial_load'];
+			$initial_load = doubleval($initial_load) * CARNIE_KARMA_LOAD_MULTIPLIER;
 
 			print "<tr>";
 			echo "<td>" .  str_replace('-', '&#x2011;', $detail['date']) . " </td>";
