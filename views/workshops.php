@@ -69,6 +69,7 @@ class carnieKarmaWorkshopsView {
 		foreach ($workshops as $workshop) {
 
 			$karma = $workshop['karma'];
+			$karma = doubleval($karma) * CARNIE_KARMA_WORKSHOP_MULTIPLIER;
 
 			$workshop_url = $siteurl . '/wp-admin/admin.php?page=workshop&workshop=' . $workshop['workshop_id'];
 

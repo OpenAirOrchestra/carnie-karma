@@ -10,9 +10,6 @@ class carnieKarmaWorkshopsController {
 	 */
 	function report($user_id) {
 
-		global $wpdb;
-
-		$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
 
 		// Get paged and limit
 		$paged = $_REQUEST['paged'];
@@ -35,33 +32,11 @@ class carnieKarmaWorkshopsController {
 		}
 		$offset = $limit * ($paged - 1);
 
-		// Get all the data (paged view will come later)
+		$workshopKarma = new carnieKarmaWorkshopKarma;
+		$workshop_karma_rows = $workshopKarma->get_rows($user_id);
 
-		$sql = $wpdb->prepare(
-			"
-			SELECT workshop_id, title, date, user_id,
-			  ( %d * karma ) AS karma
-			  FROM  $workshop_karma_view_name
-			  WHERE  user_id = %d
-			  ORDER BY date DESC
-			  LIMIT %d, %d
-			",
-			CARNIE_KARMA_WORKSHOP_MULTIPLIER,
-			$user_id, $offset, $limit
-			);
-
-		$results = $wpdb->get_results($sql, ARRAY_A);
-
-		// what's to total count of all workshops?
-		$sql = $wpdb->prepare(
-			"
-			SELECT COUNT(*)
-			  FROM  $workshop_karma_view_name
-			  WHERE  user_id = %d
-			",
-			$user_id
-			);
-		$count = $wpdb->get_var($sql);
+		$count = count($workshop_karma_rows);
+		$results = array_slice($workshop_karma_rows, $offset, $limit);
 
 		$workshopsView = new carnieKarmaWorkshopsView;
 		$workshopsView->render($user_id, $results, $count, $paged, $limit);

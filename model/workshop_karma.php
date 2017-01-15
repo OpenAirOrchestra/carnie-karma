@@ -40,7 +40,8 @@ class carnieKarmaWorkshopKarma {
 			"WHERE " .
 			$workshop_attendance_name . ".user_id = %d " .
 			"AND " .
-			$workshops_name . ".id = " . $workshop_attendance_name . ".workshopid ", 
+			$workshops_name . ".id = " . $workshop_attendance_name . ".workshopid " .
+			"ORDER BY date DESC",
 			$user_id);
 
 		$results = $wpdb->get_results($sql, ARRAY_A);

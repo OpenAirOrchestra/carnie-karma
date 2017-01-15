@@ -167,7 +167,6 @@ sss for that user.
 		     (wp_verify_nonce($karma_list_nonce, 'karma_list_nonce')) ) {
 
 			// Get summary data For workshops
-
 			$workshopKarma = new carnieKarmaWorkshopKarma;
 			$workshop_karma_rows = $workshopKarma->get_rows($user_id);
 			$workshop_count = count($workshop_karma_rows);
