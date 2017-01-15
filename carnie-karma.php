@@ -171,40 +171,33 @@ sss for that user.
 			$workshopKarma = new carnieKarmaWorkshopKarma;
 			$workshop_karma_rows = $workshopKarma->get_rows($user_id);
 			$workshop_count = count($workshop_karma_rows);
-			$workshop_karma = array_reduce($workshop_karma_rows, function(&$res, $workshop) {
-    						return $res + doubleval($workshop['karma']) * CARNIE_KARMA_WORKSHOP_MULTIPLIER;
+			$workshop_karma = array_reduce($workshop_karma_rows, function(&$res, $item) {
+    						return $res + doubleval($item['karma']) * CARNIE_KARMA_WORKSHOP_MULTIPLIER;
 						}, 0.0);
 			
-			// Get summary data For gigs
-			$sql = $wpdb->prepare(
-				"
-				SELECT COUNT(  gigid ) AS gigs , (%d * SUM(  karma )) AS gig_karma
-				  FROM  $gig_karma_view_name
-				  WHERE  userid = %d
-				",
-				CARNIE_KARMA_GIG_MULTIPLIER,
-				$user_id
-				);
 
-			$gig_row = $wpdb->get_row($sql, ARRAY_A);
+			// Get summary data for karmic load
+			$karmicLoad = new carnieKarmaKarmicLoad;
+			$karmic_load_rows = $karmicLoad->get_rows($user_id);
+			$karmic_load_count = count($karmic_load_rows);
+			$karmic_load = array_reduce($karmic_load_rows, function(&$res, $item) {
+    						return $res + doubleval($item['karma']) * CARNIE_KARMA_LOAD_MULTIPLIER;
+						}, 0.0);
 
-			// Get summary data For karmic load
-			$sql = $wpdb->prepare(
-				"
-				SELECT COUNT(  id ) AS events , (%d * SUM(  karma )) AS karmic_load
-				  FROM  $karma_load_view_name
-				  WHERE  userid = %d
-				",
-				CARNIE_KARMA_LOAD_MULTIPLIER,
-				$user_id
-				);
-			$load_row = $wpdb->get_row($sql, ARRAY_A);
+			// Get summary data For gigs 
+			$gigKarma = new carnieKarmaGigKarma;
+			$gig_karma_rows = $gigKarma->get_rows($user_id);
+			$gig_karma_count = count($gig_karma_rows);
+			$gig_karma = array_reduce($gig_karma_rows, function(&$res, $item) {
+    						return $res + doubleval($item['karma']) * CARNIE_KARMA_GIG_MULTIPLIER;
+						}, 0.0);
 
 			$userView = new carnieKarmaUserView;
 			$userView->render($user_id, 
 				$workshop_count, $workshop_karma,
-				$gig_row['gigs'], $gig_row['gig_karma'],
-				$load_row['events'], $load_row['karmic_load']
+				// $gig_row['gigs'], $gig_row['gig_karma'],
+				$gig_karma_count, $gig_karma,
+				$karmic_load_count, $karmic_load
 			);
 		} else {
 			echo "<h2>Security error: nonce</h2>";
@@ -698,39 +691,22 @@ sss for that user.
 
 		echo "<pre>";
 	
-			$workshopKarma = new carnieKarmaWorkshopKarma;
-			$carnieKarmaWorkshopKarmaRows = $workshopKarma->get_rows($user_id);
+			$gigKarma = new carnieKarmaGigKarma;
+			$gig_karma_rows = $gigKarma->get_rows($user_id);
 
-		global $wpdb;
-		$wpdb->show_errors();
+			// var_dump($gig_karma_rows);
 
-		$workshops_name = $wpdb->prefix . "workshops";
-		$workshop_attendance_name = $wpdb->prefix . "workshop_attendance";
+			$gig_karma_count = count($gig_karma_rows);
 
-		$sql = $wpdb->prepare(
-			"SELECT " .
-			$workshops_name . ".id AS workshop_id, " .
-			$workshops_name . ".title AS title, " .
-			$workshops_name . ".date AS date, " .
-			$workshop_attendance_name . ".user_id AS user_id, " .
-			"POW(0.998 , ( DATEDIFF( CURRENT_DATE( ) , " . $workshops_name . ".date ) ) ) AS karma " .
-			"FROM " .
-			$workshops_name . " , " . $workshop_attendance_name . " " . 
-			"WHERE " .
-			$workshop_attendance_name . ".user_id = %d " .
-			"AND " .
-			$workshops_name . ".id = " . $workshop_attendance_name . ".workshopid ", 
-			$user_id);
+			var_dump($gig_karma_count);
 
-		var_dump($sql);
+			$gig_karma = array_reduce($gig_karma_rows, function(&$res, $item) {
+    						return $res + doubleval($item['karma']) * CARNIE_KARMA_GIG_MULTIPLIER;
+						}, 0.0);
 
-		$results = $wpdb->get_results($sql, ARRAY_A);
-
-		var_dump($results);
+			var_dump($gig_karma);
 
 		echo "</pre>";
-
-		$wpdb->print_error(); 
 	}
 
 
