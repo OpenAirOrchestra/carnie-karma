@@ -6,6 +6,9 @@
 require_once 'ajaxSetup.php';
 require_once 'version.php';
 require_once 'model/multipliers.php';
+require_once 'model/gig_karma.php';
+require_once 'model/karmic_load.php';
+require_once 'model/workshop_karma.php';
 
 global $wpdb;
 global $current_user;
@@ -32,6 +35,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 		$users = carnieKarma::users();
 		foreach ($users as $user) {
 			if ($user['ID'] != 1) {
+				$user_id = $user['ID'];
 			
 				$user_info = get_userdata($user['ID']);
 
@@ -47,49 +51,32 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				// user lastname
 				outputField($user['last_name']);
 
-				// balance
-				$workshop_karma_view_name = $wpdb->prefix . "workshop_karma";
-				$gig_karma_view_name = $wpdb->prefix . "gig_karma";
-				$karma_load_view_name = $wpdb->prefix . "karmic_load";
-
 				// Get summary data For workshops
-				$sql = $wpdb->prepare(
-					"
-					SELECT ( %d * SUM(  karma ) ) AS workshop_karma
-					  FROM  $workshop_karma_view_name
-					  WHERE  user_id = %d
-					",
-					CARNIE_KARMA_WORKSHOP_MULTIPLIER,
-					$user['ID']
-					);
+				$workshopKarma = new carnieKarmaWorkshopKarma;
+				$workshop_karma_rows = $workshopKarma->get_rows($user_id);
+				$workshop_count = count($workshop_karma_rows);
+				$workshop_karma = array_reduce($workshop_karma_rows, function(&$res, $item) {
+							return $res + doubleval($item['karma']) * CARNIE_KARMA_WORKSHOP_MULTIPLIER;
+							}, 0.0);
+				
 
-				$workshop_row = $wpdb->get_row($sql, ARRAY_A);
+				// Get summary data for karmic load
+				$karmicLoad = new carnieKarmaKarmicLoad;
+				$karmic_load_rows = $karmicLoad->get_rows($user_id);
+				$karmic_load_count = count($karmic_load_rows);
+				$karmic_load = array_reduce($karmic_load_rows, function(&$res, $item) {
+							return $res + doubleval($item['karma']) * CARNIE_KARMA_LOAD_MULTIPLIER;
+							}, 0.0);
 
-				// Get summary data For gigs
-				$sql = $wpdb->prepare(
-					"
-					SELECT (%d * SUM(  karma )) AS gig_karma
-					  FROM  $gig_karma_view_name
-					  WHERE  userid = %d
-					",
-					CARNIE_KARMA_GIG_MULTIPLIER,
-					$user['ID']
-					);
-				$gig_row = $wpdb->get_row($sql, ARRAY_A);
+				// Get summary data For gigs 
+				$gigKarma = new carnieKarmaGigKarma;
+				$gig_karma_rows = $gigKarma->get_rows($user_id);
+				$gig_karma_count = count($gig_karma_rows);
+				$gig_karma = array_reduce($gig_karma_rows, function(&$res, $item) {
+							return $res + doubleval($item['karma']) * CARNIE_KARMA_GIG_MULTIPLIER;
+							}, 0.0);
 
-				// Get summary data For karmic load
-				$sql = $wpdb->prepare(
-					"
-					SELECT (%d * SUM(  karma )) AS karmic_load
-					  FROM  $karma_load_view_name
-					  WHERE  userid = %d
-					",
-					CARNIE_KARMA_LOAD_MULTIPLIER,
-					$user['ID']
-					);
-				$load_row = $wpdb->get_row($sql, ARRAY_A);
-
-				$total = $gig_row['gig_karma'] + $workshop_row['workshop_karma'] - $load_row['karmic_load'];
+				$total = $gig_karma + $workshop_karma - $karmic_load;
 				echo $total;
                 		echo "\n";
 			}
