@@ -37,8 +37,6 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 			if ($user['ID'] != 1) {
 				$user_id = $user['ID'];
 			
-				$user_info = get_userdata($user['ID']);
-
 				// user id
 				outputField($user['ID']);
 
@@ -46,10 +44,10 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				outputField($user['user_nicename']);
 
 				// user firstname
-				outputField($user['first_name']);
+				outputField(get_user_meta( $user_id, 'first_name', YES ));
 
 				// user lastname
-				outputField($user['last_name']);
+				outputField(get_user_meta( $user_id, 'last_name', YES ));
 
 				// Get summary data For workshops
 				$workshopKarma = new carnieKarmaWorkshopKarma;
