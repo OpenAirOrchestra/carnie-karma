@@ -1,13 +1,14 @@
 <?php
-/*
-Plugin Name: Carnie Karma 
-Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
-Description: A plugin to calculate and display participation Karma for The Carnival Band
-Version: 0.3
-Author: DarrylF
-Author URI: http://www.thecarnivalband.com
-License: GPL2
-*/
+/**
+ * Plugin Name: Carnie Karma 
+ * Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
+ * Description: A plugin to calculate and display participation Karma for The Carnival Band
+ * Version: 1.0
+ * Author: DarrylF
+ * Author URI: http://www.thecarnivalband.com
+ * License: GPL2
+ * GitHub Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
+ **/
 ?>
 <?php
 /*  Copyright 2012  DarrylF (email : oaowebmonkey@gmail.com)

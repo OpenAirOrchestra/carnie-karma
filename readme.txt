@@ -3,8 +3,8 @@ Contributors: darrylf Richard K
 Donate link: http://www.thecarnivalband.com/
 Tags: gigs, particpation
 Requires at least: 4.7
-Tested up to: 4.7.1
-Stable tag: 0.4
+Tested up to: 5.3.1
+Stable tag: 1.0
 
 A plugin to calculate and display participation Karma for The Carnival Band
 
@@ -46,4 +46,7 @@ Filter out users with no role from listings.
 
 = 0.4 =
 Used php code instead of database views for karma calculations
+
+= 1.0 =
+Github updater integration
 
