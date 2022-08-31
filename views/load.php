@@ -156,7 +156,7 @@ class carnieKarmaLoadView {
          * render a row in karmic load table
          */
         function render_row( $row, $history, $karma_ledger_delete_nonce ) {
-		$siteurl = get_bloginfo('siteurl');
+		$siteurl = get_bloginfo('url');
 		$user_id = $row["user_id"];
 		$user_info = get_userdata($user_id);
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;

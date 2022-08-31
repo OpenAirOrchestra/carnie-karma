@@ -103,7 +103,7 @@ class carnieKarmaUserView {
 	function render($user_id, $workshops, $workshop_karma, $gigs, $gig_karma, $tours, $karmic_load) {
                 $user_info = get_userdata($user_id);
 
-                $siteurl = get_bloginfo('siteurl');
+                $siteurl = get_bloginfo('url');
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
 
 
