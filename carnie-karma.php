@@ -387,7 +387,7 @@ sss for that user.
          */
         function process_ledger_post() {
 		$post_errors = array();
-                if (current_user_can('add_users')) {
+                if (current_user_can('add_users') && array_key_exists('karma_ledger_nonce', $_REQUEST)) {
                         $nonce = $_REQUEST['karma_ledger_nonce'];
                         if ($nonce && wp_verify_nonce($nonce, 'karma_ledger_nonce')) {
                                 // Process post
@@ -501,8 +501,7 @@ sss for that user.
 
 		 global $wpdb;
 
-                 if ( strcasecmp($_REQUEST["action"], 'delete') == 0) {
-
+                 if ( array_key_exists("action", $_REQUEST) && array_key_exists("karma_ledger_delete_nonce", $_REQUEST) && strcasecmp($_REQUEST["action"], 'delete') == 0) {
 
                         $delete_nonce = $_REQUEST["karma_ledger_delete_nonce"];
                         $id = $_GET["row"];
@@ -517,20 +516,21 @@ sss for that user.
 
                 $orderBy = 'id';
                 $order = 'DESC';
-                if ( strcasecmp($_REQUEST["orderby"], 'title') == 0 ||
+                if ( array_key_exists("orderby", $_REQUEST) && (
+						strcasecmp($_REQUEST["orderby"], 'title') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'user_id') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'initial_load') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'deleted') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'id') == 0 ||
-                        strcasecmp($_REQUEST["orderby"], 'date') == 0) {
+                        strcasecmp($_REQUEST["orderby"], 'date') == 0)) {
                         $orderBy = strtolower($_REQUEST["orderby"]);
                 }
-                if ( strcasecmp($_REQUEST["order"], 'asc') == 0) {
+                if ( array_key_exists("order", $_REQUEST) && strcasecmp($_REQUEST["order"], 'asc') == 0) {
                         $order = "ASC";
                 }
 
                 $paged = 1;
-                if ($_REQUEST["paged"]) {
+                if (array_key_exists("paged", $_REQUEST) && $_REQUEST["paged"]) {
                         $paged = intval($_REQUEST['paged']);
                         if ($paged < 1) {
                                 $paged = 1;
