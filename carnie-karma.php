@@ -163,7 +163,7 @@ class carnieKarma {
 										OR m.meta_value LIKE '%%editor%%'
 										OR m.meta_value LIKE '%%administrator%%'
 									)								
-								ORDER BY u.user_nicename", $workshop_id);
+								ORDER BY u.user_nicename");
 		$users = $wpdb->get_results( $sql, ARRAY_A );
 		return $users;
 	}
