@@ -400,12 +400,12 @@ sss for that user.
         }
 
 	/*
-         * Create admin menu(s) for this plugin.
-         */
-        function create_admin_menu() {
+     * Create admin menu(s) for this plugin.
+     */
+	function create_admin_menu() {
 
-                // Add object page
-                $page = add_object_page( 'Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url( 'images/karma16.png' , __FILE__ ));
+		// Add object page
+		$page = add_menu_page('Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url('images/karma16.png', __FILE__));
 
 		// Add tools page
 		add_management_page('Export Carnie Karma', 'Export Carnie Karma', 'read_private_posts', 'export-carnie-karma-tools', array($this, 'export_karma_page'));
@@ -414,7 +414,7 @@ sss for that user.
 	   
 	/*
  	 * Enqueue admin stylesheet	
-         */
+     */
 	function admin_styles($hook) {
 		if ('toplevel_page_list-karmic-load' != $hook) 
 			return;
