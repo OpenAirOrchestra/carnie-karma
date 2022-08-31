@@ -3,7 +3,7 @@
  * Plugin Name: Carnie Karma 
  * Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
  * Description: A plugin to calculate and display participation Karma for The Carnival Band
- * Version: 1.0
+ * Version: 1.1
  * Author: DarrylF
  * Author URI: http://www.thecarnivalband.com
  * License: GPL2
@@ -163,7 +163,7 @@ class carnieKarma {
 										OR m.meta_value LIKE '%%editor%%'
 										OR m.meta_value LIKE '%%administrator%%'
 									)								
-								ORDER BY u.user_nicename", $workshop_id);
+								ORDER BY u.user_nicename");
 		$users = $wpdb->get_results( $sql, ARRAY_A );
 		return $users;
 	}
@@ -387,7 +387,7 @@ sss for that user.
          */
         function process_ledger_post() {
 		$post_errors = array();
-                if (current_user_can('add_users')) {
+                if (current_user_can('add_users') && array_key_exists('karma_ledger_nonce', $_REQUEST)) {
                         $nonce = $_REQUEST['karma_ledger_nonce'];
                         if ($nonce && wp_verify_nonce($nonce, 'karma_ledger_nonce')) {
                                 // Process post
@@ -400,12 +400,12 @@ sss for that user.
         }
 
 	/*
-         * Create admin menu(s) for this plugin.
-         */
-        function create_admin_menu() {
+     * Create admin menu(s) for this plugin.
+     */
+	function create_admin_menu() {
 
-                // Add object page
-                $page = add_object_page( 'Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url( 'images/karma16.png' , __FILE__ ));
+		// Add object page
+		$page = add_menu_page('Karmic Load', 'Karmic Load', 'read', 'list-karmic-load', array($this, 'list_karmic_load'), plugins_url('images/karma16.png', __FILE__));
 
 		// Add tools page
 		add_management_page('Export Carnie Karma', 'Export Carnie Karma', 'read_private_posts', 'export-carnie-karma-tools', array($this, 'export_karma_page'));
@@ -414,7 +414,7 @@ sss for that user.
 	   
 	/*
  	 * Enqueue admin stylesheet	
-         */
+     */
 	function admin_styles($hook) {
 		if ('toplevel_page_list-karmic-load' != $hook) 
 			return;
@@ -501,8 +501,7 @@ sss for that user.
 
 		 global $wpdb;
 
-                 if ( strcasecmp($_REQUEST["action"], 'delete') == 0) {
-
+                 if ( array_key_exists("action", $_REQUEST) && array_key_exists("karma_ledger_delete_nonce", $_REQUEST) && strcasecmp($_REQUEST["action"], 'delete') == 0) {
 
                         $delete_nonce = $_REQUEST["karma_ledger_delete_nonce"];
                         $id = $_GET["row"];
@@ -517,20 +516,21 @@ sss for that user.
 
                 $orderBy = 'id';
                 $order = 'DESC';
-                if ( strcasecmp($_REQUEST["orderby"], 'title') == 0 ||
+                if ( array_key_exists("orderby", $_REQUEST) && (
+						strcasecmp($_REQUEST["orderby"], 'title') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'user_id') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'initial_load') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'deleted') == 0 ||
                         strcasecmp($_REQUEST["orderby"], 'id') == 0 ||
-                        strcasecmp($_REQUEST["orderby"], 'date') == 0) {
+                        strcasecmp($_REQUEST["orderby"], 'date') == 0)) {
                         $orderBy = strtolower($_REQUEST["orderby"]);
                 }
-                if ( strcasecmp($_REQUEST["order"], 'asc') == 0) {
+                if ( array_key_exists("order", $_REQUEST) && strcasecmp($_REQUEST["order"], 'asc') == 0) {
                         $order = "ASC";
                 }
 
                 $paged = 1;
-                if ($_REQUEST["paged"]) {
+                if (array_key_exists("paged", $_REQUEST) && $_REQUEST["paged"]) {
                         $paged = intval($_REQUEST['paged']);
                         if ($paged < 1) {
                                 $paged = 1;

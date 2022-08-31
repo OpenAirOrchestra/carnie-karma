@@ -24,7 +24,7 @@ class carnieKarmaWorkshopsView {
 	 */
 	function render($user_id, $workshops, $count, $paged, $limit) {
 
-                $siteurl = get_bloginfo('siteurl');
+                $siteurl = get_bloginfo('url');
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
                 $user_info = get_userdata($user_id);
 
