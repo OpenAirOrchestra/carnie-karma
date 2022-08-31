@@ -3,7 +3,7 @@
  * Plugin Name: Carnie Karma 
  * Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
  * Description: A plugin to calculate and display participation Karma for The Carnival Band
- * Version: 1.0
+ * Version: 1.1
  * Author: DarrylF
  * Author URI: http://www.thecarnivalband.com
  * License: GPL2
