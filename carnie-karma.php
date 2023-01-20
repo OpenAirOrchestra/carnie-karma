@@ -313,11 +313,11 @@ sss for that user.
 		
 		if (! current_user_can('read_private_posts')) {
 			$user_id = $current_user->ID;
-		} else if ($_REQUEST['user_id']) {
+		} else if (isset($_REQUEST['user_id']) && $_REQUEST['user_id']) {
 			$user_id = $_REQUEST['user_id'];
 		}
 
-		if ($_REQUEST['karma_detail']) {
+		if (isset($_REQUEST['karma_detail']) && $_REQUEST['karma_detail']) {
 			$this->detail($user_id, $_REQUEST['karma_detail']);
 		} else if ($user_id) {
 			$this->render_user($user_id);
