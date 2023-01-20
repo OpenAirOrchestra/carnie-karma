@@ -11,24 +11,27 @@ class carnieKarmaWorkshopsController {
 	function report($user_id) {
 
 		// Get paged and limit
-		$paged = $_REQUEST['paged'];
-		if ($_REQUEST['submit-first-page']) {
+		$paged = 1;
+		
+		if (isset($_REQUEST['paged'])) {
+			$paged = $_REQUEST['paged'];
+		}
+
+		if (isset($_REQUEST['submit-first-page'])) {
 			$paged = $_REQUEST['first-page'];
-		} else if ($_REQUEST['submit-previous-page']) {
+		} else if (isset($_REQUEST['submit-previous-page'])) {
 			$paged = $_REQUEST['previous-page'];
-		} else if ($_REQUEST['submit-next-page']) {
+		} else if (isset($_REQUEST['submit-next-page'])) {
 			$paged = $_REQUEST['next-page'];
-		} else if ($_REQUEST['submit-last-page']) {
+		} else if (isset($_REQUEST['submit-last-page'])) {
 			$paged = $_REQUEST['last-page'];
 		} 
 
-		if (! $paged) {
-			$paged = 1;
+		$limit = 30;
+		if (isset($_REQUEST['limit'])) {
+			$limit = $_REQUEST['limit'];
 		}
-		$limit = $_REQUEST['limit'];
-		if (! $limit) {
-			$limit = 30;
-		}
+		
 		$offset = $limit * ($paged - 1);
 
 		$workshopKarma = new carnieKarmaWorkshopKarma;
