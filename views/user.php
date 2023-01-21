@@ -90,7 +90,7 @@ class carnieKarmaUserView {
 ?>
 
 		<h3>Karmic Balance</h3>
-		<br/>
+		<p>
 			Karmic Balance: <?php print abs($balance) < 0.1 ? $balance : number_format($balance, 1); ?>
 		</p>
 <?php
