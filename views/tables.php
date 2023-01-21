@@ -12,7 +12,7 @@ class carnieKarmaTableView {
 
 		$total_pages = ceil($count / $limit);
 
-		$first_paged = 1;
+		$first_page = 1;
 		$prev_page = $first_page;
 
 	        if ($paged > 1) {
