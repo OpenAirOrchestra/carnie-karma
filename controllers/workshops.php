@@ -41,7 +41,7 @@ class carnieKarmaWorkshopsController {
 		$results = array_slice($workshop_karma_rows, $offset, $limit);
 
 		$workshopsView = new carnieKarmaWorkshopsView;
-		$workshopsView->render($user_id, $results, $count, $paged, $limit);
+		return $workshopsView->render($user_id, $results, $count, $paged, $limit);
 	}
 }
 ?>

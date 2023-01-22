@@ -12,42 +12,45 @@ class carnieKarmaUsersView {
 	 */
 	function render($users) {
 
-		print "<h2>Participants</h2>";
+		$result = "<h2>Participants</h2>";
 
-                $karma_list_nonce = wp_create_nonce('karma_list_nonce');
+        $karma_list_nonce = wp_create_nonce('karma_list_nonce');
 
 
-		print "<UL>";
+		$result .= "<UL>";
 		
 
 	
 		foreach ($users as $user) {
 			if ($user['ID'] != 1) {
-				print "<LI>";
-?>
-        <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
-                <input type="hidden" name="karma_list_nonce" value="<?php echo $karma_list_nonce; ?>" />
-                <input type="hidden" name="user_id" value="<?php echo $user['ID']; ?>" />
-<?php
+				$result .= "<LI>";
+				$result .= "
+				<form method=\"post\" action=\"" . $_SERVER["REQUEST_URI"] . "\">
+				<input type=\"hidden\" name=\"karma_list_nonce\" value=\"" .  $karma_list_nonce . "\" />
+                <input type=\"hidden\" name=\"user_id\" value=\"" .  $user['ID'] . "\" />
+				";
+
 				$user_info = get_userdata($user['ID']);
 				if ($user_info->first_name || $user_info->last_name) {
-					echo $user_info->first_name . ' ' . $user_info->last_name;
-					echo ' (' . $user['user_login'] . ')';
+					$result .= $user_info->first_name . ' ' . $user_info->last_name;
+					$result .= ' (' . $user['user_login'] . ')';
 				} else {
-					echo $user['display_name'];
-					echo ' (' . $user['user_login'] . ')';
+					$result .= $user['display_name'];
+					$result .= ' (' . $user['user_login'] . ')';
 				}
 				
-?>
-                <input type="submit" value="Details" />
-	</form>
-<?php
+				$result .= "
+				<input type=\"submit\" value=\"Details\" />
+			</form>
+				";
 
-				print "</LI>";
+		$result .= "</LI>";
 			}
 		}
 
-		print "</UL>";
+		$result .= "</UL>";
+
+		return $result;
 	}
 }
 ?>

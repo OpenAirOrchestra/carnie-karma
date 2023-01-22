@@ -127,7 +127,7 @@ class carnieKarmaLoadController {
 		$results = array_slice($karmic_load_rows, $offset, $limit);
 
 		$gigsView = new carnieKarmaLoadDetailsView;
-		$gigsView->render($user_id, $results, $count, $paged, $limit);
+		return $gigsView->render($user_id, $results, $count, $paged, $limit);
 	}
 }
 ?>

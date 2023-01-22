@@ -39,7 +39,7 @@ class carnieKarmaGigsController {
 		$results = array_slice($gig_karma_rows, $offset, $limit);
 
 		$gigsView = new carnieKarmaGigsView;
-		$gigsView->render($user_id, $results, $count, $paged, $limit);
+		return $gigsView->render($user_id, $results, $count, $paged, $limit);
 	}
 }
 ?>

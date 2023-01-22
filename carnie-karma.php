@@ -3,7 +3,7 @@
  * Plugin Name: Carnie Karma 
  * Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
  * Description: A plugin to calculate and display participation Karma for The Carnival Band
- * Version: 1.3
+ * Version: 1.3.1
  * Author: DarrylF
  * Author URI: http://www.thecarnivalband.com
  * License: GPL2
@@ -175,20 +175,20 @@ sss for that user.
 	function list_users() {
 		$users = carnieKarma::users();
 		$usersView = new carnieKarmaUsersView;
-		$usersView->render($users);
+		return $usersView->render($users);
 	}
 
 	/*
 	 * Renders karma for a user, linking to detailed karma reports
 	 */
 	function render_user($user_id) {
-		
+		$result = "";
 		global $wpdb;
 
 		$current_user = wp_get_current_user();
 
-                $karma_list_nonce = $_REQUEST['karma_list_nonce'];
-                if ( ($user_id == $current_user->ID) ||
+        $karma_list_nonce = $_REQUEST['karma_list_nonce'];
+    	if ( ($user_id == $current_user->ID) ||
 		     (wp_verify_nonce($karma_list_nonce, 'karma_list_nonce')) ) {
 
 			// Get summary data For workshops
@@ -217,19 +217,20 @@ sss for that user.
 						}, 0.0);
 
 			$userView = new carnieKarmaUserView;
-			$userView->render($user_id, 
+			$result .= $userView->render($user_id, 
 				$workshop_count, $workshop_karma,
 				// $gig_row['gigs'], $gig_row['gig_karma'],
 				$gig_karma_count, $gig_karma,
 				$karmic_load_count, $karmic_load
 			);
 		} else {
-			echo "<h2>Security error: nonce</h2>";
+			$result .= "<h2>Security error: nonce</h2>";
 		}
 
 		// DFDF $this->debug_sql($user_id);
 
-		$this->explain_karma();
+		$result .= $this->explain_karma();
+		return $result;
 	}
 
 	/*
@@ -237,7 +238,7 @@ sss for that user.
 	 */
 	function workshop_detail($user_id) {
 		$workshopsController = new carnieKarmaWorkshopsController;
-		$workshopsController->report($user_id);
+		return $workshopsController->report($user_id);
 	}
 
 	/*
@@ -245,7 +246,7 @@ sss for that user.
 	 */
 	function gig_detail($user_id) {
 		$gigsController = new carnieKarmaGigsController;
-		$gigsController->report($user_id);
+		return $gigsController->report($user_id);
 	}
 
 	/*
@@ -253,30 +254,32 @@ sss for that user.
 	 */
 	function load_detail($user_id) {
 		$loadController = new carnieKarmaLoadController;
-		$loadController->report($user_id);
+		return $loadController->report($user_id);
 	}
 
 	/*
 	 * Do a detailed report of karma of a type for a user
 	 */
 	function detail($user_id, $type) {
-                $karma_detail_nonce = $_REQUEST['karma_detail_nonce'];
-                if ( wp_verify_nonce($karma_detail_nonce, 'karma_detail_nonce') ) {
+		$result = "";
+        $karma_detail_nonce = $_REQUEST['karma_detail_nonce'];
+        if ( wp_verify_nonce($karma_detail_nonce, 'karma_detail_nonce') ) {
 
 			$karma_detail = $_REQUEST['karma_detail'];
 
 			if (strcmp($karma_detail, "workshop") == 0) {
-				$this->workshop_detail($user_id);
+				$result .= $this->workshop_detail($user_id);
 			} else if (strcmp($karma_detail, "gig") == 0) {
-				$this->gig_detail($user_id);
+				$result .= $this->gig_detail($user_id);
 			} else if (strcmp($karma_detail, "load") == 0) {
-				$this->load_detail($user_id);
+				$result .= $this->load_detail($user_id);
 			} else {
-				echo "<h2>Error, unknown karma detail type</h2>";
+				$result .= "<h2>Error, unknown karma detail type</h2>";
 			}
 		} else {
-			echo "<h2>Security error: nonce</h2>";
+			$result .= "<h2>Security error: nonce</h2>";
 		}
+		return $result;
 	}
 
 	function export_karma_page() {
@@ -295,19 +298,20 @@ sss for that user.
 	}
 
 
-        /*
-         * Handles carniekarma shortcode
-         * examples:
-         * [carniekarma]
-         */
-        function carniekarma_shortcode_handler($atts, $content=NULL, $code="") {
-
-		/*
-                extract( shortcode_atts( array(
-                        'time' => 'all',
-                        'display' => 'short'), $atts ) );
+	/*
+		* Handles carniekarma shortcode
+		* examples:
+		* [carniekarma]
 		*/
+	function carniekarma_shortcode_handler($atts, $content=NULL, $code="") {
 
+	/*
+			extract( shortcode_atts( array(
+					'time' => 'all',
+					'display' => 'short'), $atts ) );
+	*/
+
+		$result = "";
 		$current_user = wp_get_current_user();
 		$user_id = 0;
 		
@@ -318,20 +322,20 @@ sss for that user.
 		}
 
 		if (isset($_REQUEST['karma_detail']) && $_REQUEST['karma_detail']) {
-			$this->detail($user_id, $_REQUEST['karma_detail']);
+			$result .= $this->detail($user_id, $_REQUEST['karma_detail']);
 		} else if ($user_id) {
-			$this->render_user($user_id);
+			$result .= $this->render_user($user_id);
 		} else {
-			$this->list_users();
+			$result .= $this->list_users();
 		}
+		return $result;
 	}
 
-        /*
+    /*
 	 * prints a short explanation of Karnie Karmic Decay
-         */
-        function explain_karma() {
-?>
-	<h2>Participation Karma Explained</h2>
+    */
+    function explain_karma() {
+		$result = "<h2>Participation Karma Explained</h2>
 
 	<p>
 	Participation Karma is a beautiful mystery.  It accrues with
@@ -371,8 +375,8 @@ sss for that user.
 	</p>
 
 	<p>
-		<a href="<?php echo get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/images/decay.jpg'; ?>">
-		<img src="<?php echo get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/images/decay.jpg'; ?>"/>
+		<a href=\"" . get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . "/images/decay.jpg\">
+		<img src=\"" . get_bloginfo('wpurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . "/images/decay.jpg'\"/>
 		</a>
 	</p>
 	
@@ -380,26 +384,26 @@ sss for that user.
 	Participation Karma has no monetary value.  The amount of karmic load
 	incurred for a particlar amount funding is different for every tour.
 	</p>
-
-<?php
+    ";
+		return $result;
 	}
 
 	/*
-         * Process karma load ledger post
-         */
-        function process_ledger_post() {
+	* Process karma load ledger post
+	*/
+	function process_ledger_post() {
 		$post_errors = array();
-                if (current_user_can('add_users') && array_key_exists('karma_ledger_nonce', $_REQUEST)) {
-                        $nonce = $_REQUEST['karma_ledger_nonce'];
-                        if ($nonce && wp_verify_nonce($nonce, 'karma_ledger_nonce')) {
-                                // Process post
-                                $loadController = new carnieKarmaLoadController;
-                                $post_errors = $loadController->process_post();
-                        }
-                }
+		if (current_user_can('add_users') && array_key_exists('karma_ledger_nonce', $_REQUEST)) {
+			$nonce = $_REQUEST['karma_ledger_nonce'];
+			if ($nonce && wp_verify_nonce($nonce, 'karma_ledger_nonce')) {
+				// Process post
+				$loadController = new carnieKarmaLoadController;
+				$post_errors = $loadController->process_post();
+			}
+		}
 
 		return $post_errors;
-        }
+	}
 
 	/*
      * Create admin menu(s) for this plugin.
@@ -487,11 +491,11 @@ sss for that user.
 		}
 	}
 	 
-        /*
-         * Create tools page that lists karmic load.
-	 * This is the karmic load ledger.
-         */
-        function list_karmic_load() {
+	/*
+	* Create tools page that lists karmic load.
+	* This is the karmic load ledger.
+	*/
+	function list_karmic_load() {
 
 ?>
         <div class="wrap">
@@ -638,6 +642,4 @@ register_activation_hook(__FILE__, array($CARNIEKARMA, 'activate'));
 
 // shortcodes
 add_shortcode('carniekarma', array($CARNIEKARMA, 'carniekarma_shortcode_handler'));
-
-
 ?>
