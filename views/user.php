@@ -106,11 +106,8 @@ class carnieKarmaUserView {
                 $siteurl = get_bloginfo('url');
 		$edit_url = $siteurl . '/wp-admin/user-edit.php?user_id=' . $user_id;
 
-
-		$result = "";
-
 		// Title
-		print "<h2>Participation Karma for "; 
+		$result =  "<h2>Participation Karma for "; 
 		if ($user_info->first_name || $user_info->last_name) {
 			$result .= $user_info->first_name . ' ' . $user_info->last_name;
 			$result .= ' (<a href="' . $edit_url . '">' .
