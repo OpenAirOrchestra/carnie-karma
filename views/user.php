@@ -88,10 +88,9 @@ class carnieKarmaUserView {
 	function render_balance($user_id, $workshop_karma, $gig_karma, $karmic_load) {
 		$balance = $workshop_karma + $gig_karma - $karmic_load;
 		return "
-
 		<h3>Karmic Balance</h3>
 		<p>
-			Karmic Balance: " .  abs($balance) < 0.1 ? $balance : number_format($balance, 1) . "
+			Karmic Balance: " .  (abs($balance) < 0.1 ? $balance : number_format($balance, 1)) . "
 		</p>
         ";
 	}
