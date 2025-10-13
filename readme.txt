@@ -58,3 +58,6 @@ Fix minor bugs
 
 = 1.3.1 =
 Fix shortcode rendering
+
+= 1.3.2 =
+PHP 8 fixes
