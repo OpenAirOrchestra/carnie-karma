@@ -53,7 +53,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				$workshopKarma = new carnieKarmaWorkshopKarma;
 				$workshop_karma_rows = $workshopKarma->get_rows($user_id);
 				$workshop_count = count($workshop_karma_rows);
-				$workshop_karma = array_reduce($workshop_karma_rows, function(&$res, $item) {
+				$workshop_karma = array_reduce($workshop_karma_rows, function($res, $item) {
 							return $res + doubleval($item['karma']) * CARNIE_KARMA_WORKSHOP_MULTIPLIER;
 							}, 0.0);
 				
@@ -62,7 +62,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				$karmicLoad = new carnieKarmaKarmicLoad;
 				$karmic_load_rows = $karmicLoad->get_rows($user_id);
 				$karmic_load_count = count($karmic_load_rows);
-				$karmic_load = array_reduce($karmic_load_rows, function(&$res, $item) {
+				$karmic_load = array_reduce($karmic_load_rows, function($res, $item) {
 							return $res + doubleval($item['karma']) * CARNIE_KARMA_LOAD_MULTIPLIER;
 							}, 0.0);
 
@@ -70,7 +70,7 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				$gigKarma = new carnieKarmaGigKarma;
 				$gig_karma_rows = $gigKarma->get_rows($user_id);
 				$gig_karma_count = count($gig_karma_rows);
-				$gig_karma = array_reduce($gig_karma_rows, function(&$res, $item) {
+				$gig_karma = array_reduce($gig_karma_rows, function($res, $item) {
 							return $res + doubleval($item['karma']) * CARNIE_KARMA_GIG_MULTIPLIER;
 							}, 0.0);
 

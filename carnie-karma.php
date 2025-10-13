@@ -3,7 +3,7 @@
  * Plugin Name: Carnie Karma 
  * Plugin URI: https://github.com/OpenAirOrchestra/carnie-karma
  * Description: A plugin to calculate and display participation Karma for The Carnival Band
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author: DarrylF
  * Author URI: http://www.thecarnivalband.com
  * License: GPL2
@@ -195,7 +195,7 @@ sss for that user.
 			$workshopKarma = new carnieKarmaWorkshopKarma;
 			$workshop_karma_rows = $workshopKarma->get_rows($user_id);
 			$workshop_count = count($workshop_karma_rows);
-			$workshop_karma = array_reduce($workshop_karma_rows, function(&$res, $item) {
+			$workshop_karma = array_reduce($workshop_karma_rows, function($res, $item) {
     						return $res + doubleval($item['karma']) * CARNIE_KARMA_WORKSHOP_MULTIPLIER;
 						}, 0.0);
 			
@@ -204,7 +204,7 @@ sss for that user.
 			$karmicLoad = new carnieKarmaKarmicLoad;
 			$karmic_load_rows = $karmicLoad->get_rows($user_id);
 			$karmic_load_count = count($karmic_load_rows);
-			$karmic_load = array_reduce($karmic_load_rows, function(&$res, $item) {
+			$karmic_load = array_reduce($karmic_load_rows, function($res, $item) {
     						return $res + doubleval($item['karma']) * CARNIE_KARMA_LOAD_MULTIPLIER;
 						}, 0.0);
 
@@ -212,7 +212,7 @@ sss for that user.
 			$gigKarma = new carnieKarmaGigKarma;
 			$gig_karma_rows = $gigKarma->get_rows($user_id);
 			$gig_karma_count = count($gig_karma_rows);
-			$gig_karma = array_reduce($gig_karma_rows, function(&$res, $item) {
+			$gig_karma = array_reduce($gig_karma_rows, function($res, $item) {
     						return $res + doubleval($item['karma']) * CARNIE_KARMA_GIG_MULTIPLIER;
 						}, 0.0);
 
@@ -618,7 +618,7 @@ sss for that user.
 
 			var_dump($gig_karma_count);
 
-			$gig_karma = array_reduce($gig_karma_rows, function(&$res, $item) {
+			$gig_karma = array_reduce($gig_karma_rows, function($res, $item) {
     						return $res + doubleval($item['karma']) * CARNIE_KARMA_GIG_MULTIPLIER;
 						}, 0.0);
 
