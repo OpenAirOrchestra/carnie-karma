@@ -44,10 +44,10 @@ if ( wp_verify_nonce($_POST['karma-balance-csv-verify-key'], 'karma-balance-csv-
 				outputField($user['user_nicename']);
 
 				// user firstname
-				outputField(get_user_meta( $user_id, 'first_name', YES ));
+				outputField(get_user_meta( $user_id, 'first_name', true ));
 
 				// user lastname
-				outputField(get_user_meta( $user_id, 'last_name', YES ));
+				outputField(get_user_meta( $user_id, 'last_name', true ));
 
 				// Get summary data For workshops
 				$workshopKarma = new carnieKarmaWorkshopKarma;
